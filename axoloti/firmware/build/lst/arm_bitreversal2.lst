@@ -1,0 +1,257 @@
+ARM GAS  /tmp/ccdgp2kB.s 			page 1
+
+
+   1              	# 1 "/d_drive/axoloti/platform_linux/../CMSIS//DSP_Lib/Source/TransformFunctions/arm_bitreversal2.s
+   1              	;/* ----------------------------------------------------------------------
+   0              	
+   0              	
+   2              	;* Copyright (C) 2010-2015 ARM Limited. All rights reserved.
+   3              	;*
+   4              	;* $Date:       03. January 2017
+   5              	;* $Revision:   V.1.5.0
+   6              	;*
+   7              	;* Project:     CMSIS DSP Library
+   8              	;* Title:       arm_bitreversal2.S
+   9              	;*
+  10              	;* Description: This is the arm_bitreversal_32 function done in
+  11              	;*              assembly for maximum speed.  This function is called
+  12              	;*              after doing an fft to reorder the output.  The function
+  13              	;*              is loop unrolled by 2. arm_bitreversal_16 as well.
+  14              	;*
+  15              	;* Target Processor: Cortex-M4/Cortex-M3/Cortex-M0
+  16              	;*
+  17              	;* Redistribution and use in source and binary forms, with or without
+  18              	;* modification, are permitted provided that the following conditions
+  19              	;* are met:
+  20              	;*   - Redistributions of source code must retain the above copyright
+  21              	;*     notice, this list of conditions and the following disclaimer.
+  22              	;*   - Redistributions in binary form must reproduce the above copyright
+  23              	;*     notice, this list of conditions and the following disclaimer in
+  24              	;*     the documentation and/or other materials provided with the
+  25              	;*     distribution.
+  26              	;*   - Neither the name of ARM LIMITED nor the names of its contributors
+  27              	;*     may be used to endorse or promote products derived from this
+  28              	;*     software without specific prior written permission.
+  29              	;*
+  30              	;* THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
+  31              	;* "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
+  32              	;* LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS
+  33              	;* FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE
+  34              	;* COPYRIGHT OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT,
+  35              	;* INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING,
+  36              	;* BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+  37              	;* LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
+  38              	;* CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT
+  39              	;* LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN
+  40              	;* ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
+  41              	;* POSSIBILITY OF SUCH DAMAGE.
+  42              	;* -------------------------------------------------------------------- */
+  43              	#if   defined ( __CC_ARM )     /* Keil */
+  44              	    #define CODESECT AREA     ||.text||, CODE, READONLY, ALIGN=2
+  45              	    #define LABEL
+  46              	#elif defined ( __IASMARM__ )  /* IAR */
+  47              	    #define CODESECT SECTION `.text`:CODE
+  48              	    #define PROC
+  49              	    #define LABEL
+  50              	    #define ENDP
+  51              	    #define EXPORT PUBLIC
+  52              	#elif defined ( __CSMC__ )	   /* Cosmic */
+  53              		#define	CODESECT	switch .text
+  54              		#define THUMB
+ARM GAS  /tmp/ccdgp2kB.s 			page 2
+
+
+  55              		#define EXPORT	xdef
+  56              		#define PROC	:
+  57              		#define LABEL	:
+  58              		#define ENDP
+  59              		#define arm_bitreversal_32 _arm_bitreversal_32
+  60              	#elif defined ( __TI_ARM__ )   /* TI ARM */
+  61              	    #define THUMB    .thumb
+  62              	    #define CODESECT .text
+  63              	    #define EXPORT   .global
+  64              	    #define PROC     : .asmfunc
+  65              	    #define LABEL    :
+  66              	    #define ENDP     .endasmfunc
+  67              	    #define END
+  68              	#elif defined ( __GNUC__ )     /* GCC */
+  69              	    #define THUMB .thumb
+  70              	    #define CODESECT .section .text
+  71              	    #define EXPORT .global
+  72              	    #define PROC :
+  73              	    #define LABEL :
+  74              	    #define ENDP
+  75              	    #define END
+  76              	
+  77              	    .syntax unified
+  78              	#endif
+  79              	
+  80              		CODESECT
+  81              		THUMB
+  82              	
+  83              	;/*
+  84              	;* @brief  In-place bit reversal function.
+  85              	;* @param[in, out] *pSrc        points to the in-place buffer of unknown 32-bit data type.
+  86              	;* @param[in]      bitRevLen    bit reversal table length
+  87              	;* @param[in]      *pBitRevTab  points to bit reversal table.
+  88              	;* @return none.
+  89              	;*/
+  90              		EXPORT arm_bitreversal_32
+  91              		EXPORT arm_bitreversal_16
+  92              	
+  93              	#if   defined ( __CC_ARM )     /* Keil */
+  94              	#elif defined ( __IASMARM__ )  /* IAR */
+  95              	#elif defined ( __CSMC__ )	   /* Cosmic */
+  96              	#elif defined ( __TI_ARM__ )   /* TI ARM */
+  97              	#elif defined ( __GNUC__ )     /* GCC */
+  98              		.type   arm_bitreversal_16, %function
+  99              		.type   arm_bitreversal_32, %function
+ 100              	#endif
+ 101              	
+ 102              	#if defined(ARM_MATH_CM0) || defined(ARM_MATH_CM0PLUS) || defined(ARM_MATH_ARMV8MBL)
+ 103              	
+ 104              	arm_bitreversal_32 PROC
+ 105              		ADDS     r3,r1,#1
+ 106              		PUSH     {r4-r6}
+ 107              		ADDS     r1,r2,#0
+ 108              		LSRS     r3,r3,#1
+ 109              	arm_bitreversal_32_0 LABEL
+ 110              		LDRH     r2,[r1,#2]
+ 111              		LDRH     r6,[r1,#0]
+ARM GAS  /tmp/ccdgp2kB.s 			page 3
+
+
+ 112              		ADD      r2,r0,r2
+ 113              		ADD      r6,r0,r6
+ 114              		LDR      r5,[r2,#0]
+ 115              		LDR      r4,[r6,#0]
+ 116              		STR      r5,[r6,#0]
+ 117              		STR      r4,[r2,#0]
+ 118              		LDR      r5,[r2,#4]
+ 119              		LDR      r4,[r6,#4]
+ 120              		STR      r5,[r6,#4]
+ 121              		STR      r4,[r2,#4]
+ 122              		ADDS     r1,r1,#4
+ 123              		SUBS     r3,r3,#1
+ 124              		BNE      arm_bitreversal_32_0
+ 125              		POP      {r4-r6}
+ 126              		BX       lr
+ 127              		ENDP
+ 128              	
+ 129              	arm_bitreversal_16 PROC
+ 130              		ADDS     r3,r1,#1
+ 131              		PUSH     {r4-r6}
+ 132              		ADDS     r1,r2,#0
+ 133              		LSRS     r3,r3,#1
+ 134              	arm_bitreversal_16_0 LABEL
+ 135              		LDRH     r2,[r1,#2]
+ 136              		LDRH     r6,[r1,#0]
+ 137              	    LSRS     r2,r2,#1
+ 138              	    LSRS     r6,r6,#1
+ 139              		ADD      r2,r0,r2
+ 140              		ADD      r6,r0,r6
+ 141              		LDR      r5,[r2,#0]
+ 142              		LDR      r4,[r6,#0]
+ 143              		STR      r5,[r6,#0]
+ 144              		STR      r4,[r2,#0]
+ 145              		ADDS     r1,r1,#4
+ 146              		SUBS     r3,r3,#1
+ 147              		BNE      arm_bitreversal_16_0
+ 148              		POP      {r4-r6}
+ 149              		BX       lr
+ 150              		ENDP
+ 151              	
+ 152              	#else
+ 153              	
+ 154              	arm_bitreversal_32 PROC
+ 155 0000 4B1C     		ADDS     r3,r1,#1
+ 156 0002 012B     		CMP      r3,#1
+ 157 0004 98BF     		IT       LS
+ 158 0006 7047     		BXLS     lr
+ 159 0008 2DE9F003 		PUSH     {r4-r9}
+ 160 000c 911C     		ADDS     r1,r2,#2
+ 161 000e 9B08     		LSRS     r3,r3,#2
+ 162              	arm_bitreversal_32_0 LABEL       ;/* loop unrolled by 2 */
+ 163 0010 B1F80480 		LDRH     r8,[r1,#4]
+ 164 0014 B1F80290 		LDRH     r9,[r1,#2]
+ 165 0018 0A88     		LDRH     r2,[r1,#0]
+ 166 001a 31F802CC 		LDRH     r12,[r1,#-2]
+ 167 001e 8044     		ADD      r8,r0,r8
+ 168 0020 8144     		ADD      r9,r0,r9
+ARM GAS  /tmp/ccdgp2kB.s 			page 4
+
+
+ 169 0022 0244     		ADD      r2,r0,r2
+ 170 0024 8444     		ADD      r12,r0,r12
+ 171 0026 D9F80070 		LDR      r7,[r9,#0]
+ 172 002a D8F80060 		LDR      r6,[r8,#0]
+ 173 002e 1568     		LDR      r5,[r2,#0]
+ 174 0030 DCF80040 		LDR      r4,[r12,#0]
+ 175 0034 C9F80060 		STR      r6,[r9,#0]
+ 176 0038 C8F80070 		STR      r7,[r8,#0]
+ 177 003c CCF80050 		STR      r5,[r12,#0]
+ 178 0040 1460     		STR      r4,[r2,#0]
+ 179 0042 D9F80470 		LDR      r7,[r9,#4]
+ 180 0046 D8F80460 		LDR      r6,[r8,#4]
+ 181 004a 5568     		LDR      r5,[r2,#4]
+ 182 004c DCF80440 		LDR      r4,[r12,#4]
+ 183 0050 C9F80460 		STR      r6,[r9,#4]
+ 184 0054 C8F80470 		STR      r7,[r8,#4]
+ 185 0058 CCF80450 		STR      r5,[r12,#4]
+ 186 005c 5460     		STR      r4,[r2,#4]
+ 187 005e 0831     		ADDS     r1,r1,#8
+ 188 0060 013B     		SUBS     r3,r3,#1
+ 189 0062 D5D1     		BNE      arm_bitreversal_32_0
+ 190 0064 BDE8F003 		POP      {r4-r9}
+ 191 0068 7047     		BX       lr
+ 192              		ENDP
+ 193              	
+ 194              	arm_bitreversal_16 PROC
+ 195 006a 4B1C     		ADDS     r3,r1,#1
+ 196 006c 012B     		CMP      r3,#1
+ 197 006e 98BF     		IT       LS
+ 198 0070 7047     		BXLS     lr
+ 199 0072 2DE9F003 		PUSH     {r4-r9}
+ 200 0076 911C     		ADDS     r1,r2,#2
+ 201 0078 9B08     		LSRS     r3,r3,#2
+ 202              	arm_bitreversal_16_0 LABEL       ;/* loop unrolled by 2 */
+ 203 007a B1F80480 		LDRH     r8,[r1,#4]
+ 204 007e B1F80290 		LDRH     r9,[r1,#2]
+ 205 0082 0A88     		LDRH     r2,[r1,#0]
+ 206 0084 31F802CC 		LDRH     r12,[r1,#-2]
+ 207 0088 00EB5808 		ADD      r8,r0,r8,LSR #1
+ 208 008c 00EB5909 		ADD      r9,r0,r9,LSR #1
+ 209 0090 00EB5202 		ADD      r2,r0,r2,LSR #1
+ 210 0094 00EB5C0C 		ADD      r12,r0,r12,LSR #1
+ 211 0098 D9F80070 		LDR      r7,[r9,#0]
+ 212 009c D8F80060 		LDR      r6,[r8,#0]
+ 213 00a0 1568     		LDR      r5,[r2,#0]
+ 214 00a2 DCF80040 		LDR      r4,[r12,#0]
+ 215 00a6 C9F80060 		STR      r6,[r9,#0]
+ 216 00aa C8F80070 		STR      r7,[r8,#0]
+ 217 00ae CCF80050 		STR      r5,[r12,#0]
+ 218 00b2 1460     		STR      r4,[r2,#0]
+ 219 00b4 0831     		ADDS     r1,r1,#8
+ 220 00b6 013B     		SUBS     r3,r3,#1
+ 221 00b8 DFD1     		BNE      arm_bitreversal_16_0
+ 222 00ba BDE8F003 		POP      {r4-r9}
+ 223 00be 7047     		BX       lr
+ 224              		ENDP
+ 225              	
+ARM GAS  /tmp/ccdgp2kB.s 			page 5
+
+
+ 226              	#endif
+ 227              	
+ 228              		END
+ARM GAS  /tmp/ccdgp2kB.s 			page 6
+
+
+DEFINED SYMBOLS
+/d_drive/axoloti/platform_linux/../CMSIS//DSP_Lib/Source/TransformFunctions/arm_bitreversal2.s:154    .text:00000000 arm_bitreversal_32
+/d_drive/axoloti/platform_linux/../CMSIS//DSP_Lib/Source/TransformFunctions/arm_bitreversal2.s:194    .text:0000006a arm_bitreversal_16
+/d_drive/axoloti/platform_linux/../CMSIS//DSP_Lib/Source/TransformFunctions/arm_bitreversal2.s:155    .text:00000000 $t
+/d_drive/axoloti/platform_linux/../CMSIS//DSP_Lib/Source/TransformFunctions/arm_bitreversal2.s:162    .text:00000010 arm_bitreversal_32_0
+/d_drive/axoloti/platform_linux/../CMSIS//DSP_Lib/Source/TransformFunctions/arm_bitreversal2.s:202    .text:0000007a arm_bitreversal_16_0
+
+NO UNDEFINED SYMBOLS
