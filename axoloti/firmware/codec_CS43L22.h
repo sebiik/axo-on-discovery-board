@@ -33,7 +33,7 @@
 #define CODEC_I2S_DISABLE rccDisableSPI3(FALSE)
 #define CODEC_I2S SPI3
 
-#define CS43L22_ADDR (0x94 >> 1)
+#define CS43L22_ADDR (0x94 >> 1) // 0b 0100 1010 (7-bit chip address)
 
 extern void codec_CS43L22_hw_init(void);
 

@@ -10,9 +10,9 @@ endif
 
 # C specific options here (added to USE_OPT).
 ifeq ($(USE_COPT),)
-  USE_COPT = 
+  USE_COPT =
 endif
- 
+
 # C++ specific options here (added to USE_OPT).
 ifeq ($(USE_CPPOPT),)
   USE_CPPOPT = -fno-rtti
@@ -86,7 +86,7 @@ include $(CHIBIOS)/os/hal/platforms/STM32F4xx/platform.mk
 include $(CHIBIOS)/os/hal/hal.mk
 include $(CHIBIOS)/os/ports/GCC/ARMCMx/STM32F4xx/port.mk
 include $(CHIBIOS)/os/kernel/kernel.mk
-	
+
 include $(CHIBIOS)/os/various/fatfs_bindings/fatfs.mk
 
 CMSIS = ${axoloti_release}/CMSIS/
@@ -124,7 +124,7 @@ CSRC = $(PORTSRC) \
        ${FIRMWARE}/patch.c \
        ${FIRMWARE}/flash.c \
        ${FIRMWARE}/virtual_control.c \
-       ${FIRMWARE}/eeprom.c \
+			 ${FIRMWARE}/eeprom.c \
        ${CMSIS}/DSP_Lib/Source/TransformFunctions/arm_bitreversal.c \
        ${CMSIS}/DSP_Lib/Source/TransformFunctions/arm_cfft_f32.c \
        ${CMSIS}/DSP_Lib/Source/TransformFunctions/arm_cfft_q15.c \
@@ -207,6 +207,7 @@ CSRC = $(PORTSRC) \
        ${FIRMWARE}/sysmon.c \
        ${FIRMWARE}/axoloti_memory.c
 
+
 #optional modules
 ifneq (,$(findstring BRAIDS,$(AXO_OPT_MODULES)))
 #$(info including BRAIDS)
@@ -214,7 +215,7 @@ BRAIDS_SRC = \
        ${MUTABLE_INSTRUMENTS}/braids/braids_resources.cpp \
        ${MUTABLE_INSTRUMENTS}/braids/analog_oscillator.cpp \
        ${MUTABLE_INSTRUMENTS}/braids/digital_oscillator.cpp \
-       ${MUTABLE_INSTRUMENTS}/braids/macro_oscillator.cpp 
+       ${MUTABLE_INSTRUMENTS}/braids/macro_oscillator.cpp
 endif
 
 ifneq (,$(findstring WARPS,$(AXO_OPT_MODULES)))
@@ -224,7 +225,7 @@ WARPS_SRC = \
        ${MUTABLE_INSTRUMENTS}/warps/dsp/filter_bank.cpp \
        ${MUTABLE_INSTRUMENTS}/warps/dsp/modulator.cpp \
        ${MUTABLE_INSTRUMENTS}/warps/dsp/oscillator.cpp \
-       ${MUTABLE_INSTRUMENTS}/warps/dsp/vocoder.cpp 
+       ${MUTABLE_INSTRUMENTS}/warps/dsp/vocoder.cpp
 endif
 
 ifneq (,$(findstring ELEMENTS,$(AXO_OPT_MODULES)))
@@ -239,7 +240,7 @@ ELEMENTS_SRC = \
        ${MUTABLE_INSTRUMENTS}/elements/dsp/exciter.cpp \
        ${MUTABLE_INSTRUMENTS}/elements/elements_resources.cpp \
        ${MUTABLE_INSTRUMENTS}/elements/part.cpp \
-       ${MUTABLE_INSTRUMENTS}/elements/voice.cpp 
+       ${MUTABLE_INSTRUMENTS}/elements/voice.cpp
 endif
 
 ifneq (,$(findstring CLOUDS,$(AXO_OPT_MODULES)))
@@ -251,13 +252,13 @@ CLOUDS_SRC = \
        ${MUTABLE_INSTRUMENTS}/clouds/dsp/granular_processor.cpp \
        ${MUTABLE_INSTRUMENTS}/clouds/dsp/pvoc/frame_transformation.cpp \
        ${MUTABLE_INSTRUMENTS}/clouds/dsp/pvoc/phase_vocoder.cpp \
-       ${MUTABLE_INSTRUMENTS}/clouds/dsp/pvoc/stft.cpp 
+       ${MUTABLE_INSTRUMENTS}/clouds/dsp/pvoc/stft.cpp
 endif
 
 ifneq (,$(findstring RINGS,$(AXO_OPT_MODULES)))
 #$(info  including RINGS)
 RINGS_SRC = \
-       ${MUTABLE_INSTRUMENTS}/rings/rings_resources.cpp 
+       ${MUTABLE_INSTRUMENTS}/rings/rings_resources.cpp
 endif
 
 ifneq (,$(findstring STREAMS,$(AXO_OPT_MODULES)))
@@ -270,7 +271,7 @@ STREAMS_SRC = \
        ${MUTABLE_INSTRUMENTS}/streams/lorenz_generator.cpp \
        ${MUTABLE_INSTRUMENTS}/streams/processor.cpp \
        ${MUTABLE_INSTRUMENTS}/streams/svf.cpp \
-       ${MUTABLE_INSTRUMENTS}/streams/vactrol.cpp 
+       ${MUTABLE_INSTRUMENTS}/streams/vactrol.cpp
 endif
 
 #$(info including base MI)
@@ -289,8 +290,8 @@ CPPSRC = \
        ${RINGS_SRC} \
        ${STREAMS_SRC}
 
- 
-	   
+
+
 # C sources to be compiled in ARM mode regardless of the global setting.
 # NOTE: Mixing ARM and THUMB mode enables the -mthumb-interwork compiler
 #       option that results in lower performance and larger code size.
@@ -348,8 +349,8 @@ CPPC = $(TRGT)g++
 # Enable loading with g++ only if you need C++ runtime support.
 # NOTE: You can use C++ even without C++ support if you are careful. C++
 #       runtime support makes code size explode.
-LD   = $(TRGT)gcc 
-#LD   = $(TRGT)g++ 
+LD   = $(TRGT)gcc
+#LD   = $(TRGT)g++
 CP   = $(TRGT)objcopy
 AS   = $(TRGT)gcc -x assembler-with-cpp
 OD   = $(TRGT)objdump
@@ -390,7 +391,7 @@ DINCDIR =
 DLIBDIR =
 
 # List all default libraries here
-DLIBS = 
+DLIBS =
 
 #
 # End of default section
@@ -407,13 +408,13 @@ UDEFS = -DARM_MATH_CM4 -D__FPU_PRESENT
 UADEFS =
 
 # List all user directories here
-UINCDIR = 
+UINCDIR =
 
 # List the user directory to look for the libraries here
 ULIBDIR = .
 
 # List all user libraries here
-ULIBS = -lm 
+ULIBS = -lm
 
 #
 # End of user defines

@@ -18,11 +18,6 @@
 
 #include "axoloti_defines.h"
 
-#if (BOARD_AXOLOTI_V05)
-#include "sdram.h"
-#include "stm32f4xx_fmc.h"
-#endif
-
 #include "ch.h"
 #include "hal.h"
 #include "chprintf.h"
@@ -30,7 +25,7 @@
 #include "string.h"
 #include <stdio.h>
 
-#ifdef BOARD_STM32F4DISCOVERY //seb
+#ifdef USE_EXTERNAL_EEPROM //seb
 #include "eeprom.h" //seb
 #endif //seb
 
@@ -38,9 +33,7 @@
 #include "ui.h"
 #include "midi.h"
 
-#if ((BOARD_AXOLOTI_V03)||(BOARD_AXOLOTI_V05)) //seb
 #include "sdcard.h" //seb
-#endif //seb
 
 #include "patch.h"
 #include "pconnection.h"
@@ -54,11 +47,6 @@
 #include "usbcfg.h"
 #include "sysmon.h"
 
-#if (BOARD_AXOLOTI_V05)
-#include "sdram.c"
-#include "stm32f4xx_fmc.c"
-#define ENABLE_USB_HOST
-#endif
 /*===========================================================================*/
 /* Initialization and main thread.                                           */
 /*===========================================================================*/
@@ -67,13 +55,9 @@
 //#define ENABLE_SERIAL_DEBUG 1
 
 #ifdef ENABLE_USB_HOST
-#if (BOARD_AXOLOTI_V03)
 #error conflicting pins: USB_OTG_HS and I2S
 #endif
-extern void MY_USBH_Init(void);
-#endif
 
-#if (BOARD_STM32F4DISCOVERY)
 void ToggleGreen(void) {
   palSetPadMode(GPIOD, 12, PAL_MODE_OUTPUT_PUSHPULL); palTogglePad(GPIOD, 12);
 }
@@ -86,7 +70,6 @@ void ToggleRed(void) {
 void ToggleBlue(void) {
   palSetPadMode(GPIOD, 15, PAL_MODE_OUTPUT_PUSHPULL); palTogglePad(GPIOD, 15);
 }
-#endif
 
 int main(void) {
   // copy vector table to SRAM1!
@@ -99,9 +82,7 @@ int main(void) {
 
   halInit();
   chSysInit();
-#if ((BOARD_AXOLOTI_V03)||(BOARD_AXOLOTI_V05)) //seb
-  sdcard_init();
-#endif //seb
+  sdcard_init(); //TODO: disable this
   sysmon_init();
 
 #if ENABLE_SERIAL_DEBUG
@@ -132,11 +113,11 @@ int main(void) {
 
   axoloti_board_init();
   adc_init();
-  
-#ifdef BOARD_STM32F4DISCOVERY //seb
+
+#if (USE_EXTERNAL_EEPROM) //seb
   eeprom_init(); //seb
 #endif //seb
-  
+
   axoloti_math_init();
   midi_init();
   start_dsp_thread();
@@ -146,31 +127,16 @@ int main(void) {
     chThdSleepMilliseconds(1);
   }
 
-#if ((BOARD_AXOLOTI_V03)||(BOARD_AXOLOTI_V05))
-  axoloti_control_init();
-#endif
   ui_init();
-
-#if (BOARD_AXOLOTI_V05)
-  configSDRAM();
-  //memTest();
-#endif
-
-#ifdef ENABLE_USB_HOST
-  MY_USBH_Init();
-#endif
 
   if (!exception_check()) {
     // only try booting a patch when no exception is to be reported
 
-#if ((BOARD_AXOLOTI_V03)||(BOARD_AXOLOTI_V05))
-    
     sdcard_attemptMountIfUnmounted();
     if (fs_ready && !palReadPad(SW2_PORT, SW2_PIN)){
       // button S2 not pressed
       LoadPatchStartSD();
     }
-#endif
 
     // if no patch booting or running yet
     // try loading from flash

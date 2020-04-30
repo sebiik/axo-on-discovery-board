@@ -1,0 +1,38 @@
+/**
+ * Copyright (C) 2013, 2014 Johannes Taelman
+ *
+ * This file is part of Axoloti.
+ *
+ * Axoloti is free software: you can redistribute it and/or modify it under the
+ * terms of the GNU General Public License as published by the Free Software
+ * Foundation, either version 3 of the License, or (at your option) any later
+ * version.
+ *
+ * Axoloti is distributed in the hope that it will be useful, but WITHOUT ANY
+ * WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR
+ * A PARTICULAR PURPOSE. See the GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License along with
+ * Axoloti. If not, see <http://www.gnu.org/licenses/>.
+ */
+#include "hal.h"
+
+extern void codec_WM8731_i2s_init(uint16_t sampleRate);
+extern uint16_t codec_WM8731_hw_init(uint16_t samplerate);
+extern void codec_WM8731_hw_reset(void);
+extern void codec_WM8731_Stop(void);
+extern uint8_t WM8731_writeRegister(uint16_t registerAddr, uint16_t data);
+
+extern int codec_interrupt_timestamp;
+
+#define WM8731_REG_LLINEIN  	0 // 0b 000 0000
+#define WM8731_REG_RLINEIN  	1 // 0b 000 0001
+#define WM8731_REG_LHEADOUT 	2 // 0b 000 0010
+#define WM8731_REG_RHEADOUT 	3 // 0b 000 0011
+#define WM8731_REG_ANALOG   	4 // 0b 000 0100
+#define WM8731_REG_DIGITAL	  5 // 0b 000 0101
+#define WM8731_REG_POWERDOWN  6 // 0b 000 0110
+#define WM8731_REG_INTERFACE	7 // 0b 000 0111
+#define WM8731_REG_SAMPLING 	8 // 0b 000 1000
+#define WM8731_REG_ACTIVE   	9 // 0b 000 1001
+#define WM8731_REG_RESET     15 // 0b 000 1111

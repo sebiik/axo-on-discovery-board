@@ -17,17 +17,15 @@
  */
 
 #include "codec.h"
-
 #include "axoloti_defines.h"
+
 
 #if (BOARD_STM32F4DISCOVERY)
 #include "codec_CS43L22.h"
-#elif (BOARD_AXOLOTI_V05)
-#include "codec_ADAU1961.h"
-#elif (BOARD_AXOLOTI_V03)
-#include "codec_ADAU1961.h"
-#elif (BOARD_AXOLOTI_V01)
+
+#elif (BOARD_STM32F4DISCOVERY_WM8731)
 #include "codec_WM8731.h"
+
 #endif
 
 int32_t buf[BUFSIZE*2] __attribute__ ((section (".sram2")));
@@ -40,6 +38,13 @@ void codec_init(void) {
   codec_CS43L22_i2s_init_48k();
   codec_CS43L22_hw_init();
   codec_CS43L22_pwrCtl(1);
+#elif (BOARD_STM32F4DISCOVERY_WM8731)
+  codec_WM8731_i2s_init_48k();
+  codec_WM8731_hw_init();
+  // power up codec
+  codec_WM8731_pwrCtl(1);
+  // unmute codec
+  codec_WM8731_muteCtl(0);
 /*
   while(1){
 //    chThdSleepMilliseconds(100);
@@ -47,18 +52,12 @@ void codec_init(void) {
     chThdSleepMilliseconds(100);
   }
 */
-#elif ((BOARD_AXOLOTI_V03)||(BOARD_AXOLOTI_V05))
-  codec_ADAU1961_i2s_init(SAMPLERATE);
-  codec_ADAU1961_hw_init(SAMPLERATE);
 #else
 #error "BOARD_ not defined"
 #endif
 }
 
 void codecStop(void) {
-#if (BOARD_AXOLOTI_V03)
-  codec_ADAU1961_Stop();
-#endif
 }
 
 void codec_clearbuffer(void) {
@@ -71,8 +70,6 @@ void codec_clearbuffer(void) {
 
 #if (BOARD_STM32F4DISCOVERY)
 #include "codec_CS43L22.c"
-#elif (BOARD_AXOLOTI_V03)
-#include "codec_ADAU1961.c"
-#elif (BOARD_AXOLOTI_V05)
-#include "codec_ADAU1961_SAI.c"
+#elif (BOARD_STM32F4DISCOVERY_WM8731)
+#include "codec_WM8731.c"
 #endif
