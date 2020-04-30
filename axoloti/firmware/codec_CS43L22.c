@@ -30,55 +30,53 @@ static uint32_t i2stxdmamode = 0;
 
 static const I2CConfig i2cfg = {OPMODE_I2C, 100000, STD_DUTY_CYCLE, };
 
-#define I2S3_TX_DMA_CHANNEL \
-STM32_DMA_GETCHANNEL(STM32_SPI_SPI3_TX_DMA_STREAM, \
-STM32_SPI3_TX_DMA_CHN)
+#define I2S3_TX_DMA_CHANNEL STM32_DMA_GETCHANNEL(STM32_SPI_SPI3_TX_DMA_STREAM, STM32_SPI3_TX_DMA_CHN)
 
 static uint8_t txbuf[2] __attribute__ ((section (".sram2")));
 static uint8_t rxbuf[2] __attribute__ ((section (".sram2")));
 
 void codec_CS43L22_hw_init(void) {
-  palSetPadMode(GPIOB, 6, PAL_MODE_ALTERNATE(4) | PAL_STM32_OTYPE_OPENDRAIN);
-  palSetPadMode(GPIOB, 9, PAL_MODE_ALTERNATE(4) | PAL_STM32_OTYPE_OPENDRAIN);
+  palSetPadMode(GPIOB, 6, PAL_MODE_ALTERNATE(4) | PAL_STM32_OTYPE_OPENDRAIN); //SCL
+  palSetPadMode(GPIOB, 9, PAL_MODE_ALTERNATE(4) | PAL_STM32_OTYPE_OPENDRAIN); //SDA
 
-// Start the i2c driver
+  // Start the i2c driver
   i2cStart(&CODEC_I2C, &i2cfg);
 
-// Reset the codec
+  // Reset the codec
   codec_CS43L22_hw_reset();
 
-// Write init sequence
-// Keep codec powered down initially
+  // Write init sequence
+  // Keep codec powered down initially
   codec_CS43L22_pwrCtl(0);
 
   codec_CS43L22_muteCtl(0);
 
-// Auto Detect Clock, MCLK/2
-  codec_CS43L22_writeReg(0x05, 0x81);
+  // Auto Detect Clock, MCLK/2
+  codec_CS43L22_writeReg(0x05, 0x81); // REG: Clocking Ctl, 0b 1000 0001
 
-// Slave Mode, I2S Data Format
-  codec_CS43L22_writeReg(0x06, 0x04);
+  // Slave Mode, BLCK not inverted, I2S Data Format (up to 24bit)
+  codec_CS43L22_writeReg(0x06, 0x04); // REG: Interface Ctl 1, 0b 0000 0100
 
   codec_CS43L22_pwrCtl(1);
 
   codec_CS43L22_volCtl(200);
 
-// Adjust PCM Volume
-  codec_CS43L22_writeReg(0x1A, 0x0A);
-  codec_CS43L22_writeReg(0x1B, 0x0A);
+  // Adjust PCM Volume
+  codec_CS43L22_writeReg(0x1A, 0x0A); // REG: PCMA Vol, 0b 0000 1010, bit7 = mute,6:0=volume in weird 2s complement
+  codec_CS43L22_writeReg(0x1B, 0x0A); // REG: PCMB Vol, 0b 0000 1010 , bit7 = mute,6:0=volume in weird 2s complement
 
-// Disable the analog soft ramp
-  codec_CS43L22_writeReg(0x0A, 0x00);
+  // Disable the analog soft ramp and zero cross
+  codec_CS43L22_writeReg(0x0A, 0x00); // REG: Analog ZC and SR, 0b 0000 0000
 
-// Disable the digital soft ramp
-  codec_CS43L22_writeReg(0x0E, 0x04);
+  // Disable the digital soft ramp (and enable de-emphasis)
+  codec_CS43L22_writeReg(0x0E, 0x04); // REG: Misc. Ctl, 0b 0000 0100, bit2=enable deemphasis //TODO disable deemphasis
 
-// Disable the limiter attack level
-  codec_CS43L22_writeReg(0x27, 0x00);
+  // Disable the limiter attack level
+  codec_CS43L22_writeReg(0x27, 0x00); // REG: Limit Ctl 1, 0b 0000 0000 = disable all
 
-  codec_CS43L22_writeReg(0x1C, 0x80);
+  codec_CS43L22_writeReg(0x1C, 0x80); // REG: Beep Frq/Fime, 0b 1000 0000 = ~1khz, ~86ms
 
-//  i2cStop(&CODEC_I2C);
+  // i2cStop(&CODEC_I2C);
 
 }
 
@@ -151,25 +149,26 @@ uint8_t codec_CS43L22_readReg(uint8_t addr) {
 
 void codec_CS43L22_pwrCtl(uint8_t pwr) {
   if (pwr)
-    codec_CS43L22_writeReg(0x02, 0x9E);
+    codec_CS43L22_writeReg(0x02, 0x9E); // REG: Power Ctl 1, 0b 1001 1110 = powered up
   else
-    codec_CS43L22_writeReg(0x02, 0x01);
+    codec_CS43L22_writeReg(0x02, 0x01); // REG: Power Ctl 1, 0b 0000 0001 = powered down
 }
 
 void codec_CS43L22_muteCtl(uint8_t mute) {
   if (mute)
-    codec_CS43L22_writeReg(0x04, 0xFF);
+    codec_CS43L22_writeReg(0x04, 0xFF); // REG: Power Ctl 2, 0b 1111 1111 = all muted
   else
-    codec_CS43L22_writeReg(0x04, 0xAF);
+    codec_CS43L22_writeReg(0x04, 0xAF); // REG: Power Ctl 2, 0b 1010 1111 = HPA, HPB unmuted
 }
 
 void codec_CS43L22_volCtl(uint8_t vol) {
+  // vol in weird 2s complement, hence the below calculations
   if (vol > 0xE6) {
-    codec_CS43L22_writeReg(0x20, vol - 0xE7);
-    codec_CS43L22_writeReg(0x21, vol - 0xE7);
+    codec_CS43L22_writeReg(0x20, vol - 0xE7); // REG: Master A Vol, vol - 0b 1110 0111
+    codec_CS43L22_writeReg(0x21, vol - 0xE7); // REG: Master B Vol, vol - 0b 1110 0111
   }
   else {
-    codec_CS43L22_writeReg(0x20, vol + 0x19);
-    codec_CS43L22_writeReg(0x21, vol + 0x19);
+    codec_CS43L22_writeReg(0x20, vol + 0x19); // REG: Master A Vol, vol + 0b 0001 1001
+    codec_CS43L22_writeReg(0x21, vol + 0x19); // REG: Master B Vol, vol + 0b 0001 1001
   }
 }

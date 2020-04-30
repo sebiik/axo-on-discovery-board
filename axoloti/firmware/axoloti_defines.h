@@ -26,9 +26,11 @@
 #define BUFSIZE_POW 4
 typedef int32_t int32buffer[BUFSIZE];
 
-#define BOARD_STM32F4DISCOVERY 1
-//#define BOARD_AXOLOTI_V03 1
-//#define BOARD_AXOLOTI_V05 1
+
+// #define BOARD_STM32F4DISCOVERY 1
+#define BOARD_STM32F4DISCOVERY_WM8731 1
+
+// #define USE_EXTERNAL_EEPROM 1
 
 // firmware version 1.0.0.1
 #define FWVERSION1 1
@@ -37,8 +39,7 @@ typedef int32_t int32buffer[BUFSIZE];
 #define FWVERSION4 1
 
 #if (BOARD_STM32F4DISCOVERY)
-#elif (BOARD_AXOLOTI_V03)
-#elif (BOARD_AXOLOTI_V05)
+#elif (BOARD_STM32F4DISCOVERY_WM8731)
 #else
 #error Must define board!
 #endif

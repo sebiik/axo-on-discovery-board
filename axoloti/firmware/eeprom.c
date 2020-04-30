@@ -82,7 +82,7 @@ typedef struct {
   I2CConfig i2cfg;
 } EepromConfig_t;
 
-/* The pagesize memeber must be no larger than PAGESIZE_MAX for any chip */
+/* The pagesize member must be no larger than PAGESIZE_MAX for any chip */
 static EepromConfig_t EepromConfigs[EEPROM_TYPES] =
 	{ { 65536, 128, 5, 0xa0 >> 1,
 	    { OPMODE_I2C, 400000, FAST_DUTY_CYCLE_2 } } }; /* 24C512 */

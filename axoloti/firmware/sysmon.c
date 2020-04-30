@@ -57,19 +57,11 @@ __attribute__((noreturn))
     }
 #endif
     if (isEnabled) {
-#ifdef LED1_PORT
       palWritePad(LED1_PORT, LED1_PIN, (pattern >> pi) & 1);
-#endif
-#ifdef LED4_PORT
-      palWritePad(LED4_PORT, LED4_PIN, (pattern >> pi) & 1); //seb
-#endif
+      palWritePad(LED4_PORT, LED4_PIN, (pattern >> pi) & 1);
       pi++;
-#ifdef LED2_PORT
       palWritePad(LED2_PORT, LED2_PIN, (pattern >> pi) & 1);
-#endif
-#ifdef LED3_PORT
-      palWritePad(LED3_PORT, LED3_PIN, (pattern >> pi) & 1); //seb
-#endif
+      palWritePad(LED3_PORT, LED3_PIN, (pattern >> pi) & 1);
       pi++;
 
       if (pi > 31) {
