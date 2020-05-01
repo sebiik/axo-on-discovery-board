@@ -1,4 +1,3 @@
-// #include "codec.h"
 #include "codec_WM8731.h"
 
 const stm32_dma_stream_t* i2s_dma_tx;
@@ -8,9 +7,13 @@ static const I2CConfig i2cfgWM = {OPMODE_I2C, 100000, STD_DUTY_CYCLE, };
 #define I2S2_TX_DMA_CHANNEL STM32_DMA_GETCHANNEL(STM32_SPI_SPI2_TX_DMA_STREAM, STM32_SPI2_TX_DMA_CHN)
 
 static uint8_t txbufWM[2] __attribute__ ((section (".sram2")));
-// static uint8_t rxbufWM[2] __attribute__ ((section (".sram2")));
 
 // extern void dma_i2s_interrupt(void *, uint32_t);
+
+void codec_WM8731_hw_reset(void) {
+	codec_WM8731_writeReg(WM8731_REG_RESET, 0x00);
+	chThdSleepMilliseconds(1);
+}
 
 void codec_WM8731_hw_init(void) {
 
@@ -22,21 +25,17 @@ void codec_WM8731_hw_init(void) {
 	codec_WM8731_hw_reset();
 
 	// Slave Mode, I2S Data Format, 32bit, 48k //TODO: maybe input works with 32bit?
-	// codec_WM8731_writeReg(WM8731_REG_INTERFACE, 0b000001110);
+	codec_WM8731_writeReg(WM8731_REG_INTERFACE, 0b000001110);
 
-	// Slave Mode, I2S Data Format, 24bit, 48k
-	codec_WM8731_writeReg(WM8731_REG_INTERFACE, 0b000001010);
-
+	// Slave Mode, I2S Data Format, 24bit, 48k //TODO: is 24bit more efficient?
+	// codec_WM8731_writeReg(WM8731_REG_INTERFACE, 0b000001010);
 
 	// 256fs, 48khz in, 48khz out, MCLK/2
 	codec_WM8731_writeReg(WM8731_REG_SAMPLING,  0b001000000);
 
-	// 256fs, 48khz in, 48khz out, MCLK
-	// codec_WM8731_writeReg(WM8731_REG_SAMPLING,  0b000000000);
-
-
 	// Keep codec powered down initially
 	codec_WM8731_pwrCtl(0);
+
 	codec_WM8731_muteCtl(0);
 
 	codec_WM8731_activeCtl(1);
@@ -45,13 +44,9 @@ void codec_WM8731_hw_init(void) {
 
 	codec_WM8731_pwrCtl(1);
 
+  // set line in and headphone out volume to 0db
 	codec_WM8731_lineInVolCtl(0b00010111);
 	codec_WM8731_headphoneVolCtl(0b001111001);
-}
-
-void codec_WM8731_hw_reset(void) {
-	codec_WM8731_writeReg(WM8731_REG_RESET, 0x00);
-	chThdSleepMilliseconds(1);
 }
 
 static void dma_i2s_interrupt(void* dat, uint32_t flags) {
@@ -98,7 +93,7 @@ void codec_WM8731_i2s_init_48k(void) {
 	palSetPadMode(GPIOB, 13, PAL_MODE_ALTERNATE(5)); //BCK
 
 	// palSetPadMode(GPIOB, 14, PAL_MODE_INPUT); //TODO try this
-	palSetPadMode(GPIOB, 14, PAL_MODE_ALTERNATE(5)); //ext_SD maybe AF6?
+	palSetPadMode(GPIOB, 14, PAL_MODE_ALTERNATE(5)); //TODO ext_SD maybe AF6?
 
 	palSetPadMode(GPIOB, 15, PAL_MODE_OUTPUT_PUSHPULL);
 	palSetPadMode(GPIOB, 15, PAL_MODE_ALTERNATE(5)); //SD

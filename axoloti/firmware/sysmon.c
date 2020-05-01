@@ -113,6 +113,12 @@ void sysmon_init(void) {
 #ifdef LED2_PORT
   palSetPadMode(LED2_PORT, LED2_PIN, PAL_MODE_OUTPUT_PUSHPULL);
 #endif
+#ifdef LED3_PORT
+  palSetPadMode(LED3_PORT, LED3_PIN, PAL_MODE_OUTPUT_PUSHPULL);
+#endif
+#ifdef LED4_PORT
+  palSetPadMode(LED4_PORT, LED4_PIN, PAL_MODE_OUTPUT_PUSHPULL);
+#endif
 #ifdef SDCSW_PIN
   palSetPadMode(SDCSW_PORT, SDCSW_PIN, PAL_MODE_INPUT_PULLUP);
 #endif

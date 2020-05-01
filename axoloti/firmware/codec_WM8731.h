@@ -10,21 +10,21 @@
 #define WM8731_I2S SPI2
 #define WM8731_I2SEXT I2S2ext
 
-#define WM8731_I2C_ADDR    0x1A // 0x1A when CSB pin to ground, else 0x1B
-#define WM8731_REG_LLINEIN  	0
-#define WM8731_REG_RLINEIN  	1
-#define WM8731_REG_LHEADOUT 	2
-#define WM8731_REG_RHEADOUT 	3
-#define WM8731_REG_ANALOG   	4
-#define WM8731_REG_DIGITAL	  5
-#define WM8731_REG_POWERDOWN  6
-#define WM8731_REG_INTERFACE	7
-#define WM8731_REG_SAMPLING 	8
-#define WM8731_REG_ACTIVE   	9
-#define WM8731_REG_RESET     15
+#define WM8731_I2C_ADDR       0x1A // 0x1A when CSB pin to ground, else 0x1B
+#define WM8731_REG_LLINEIN  	0x00
+#define WM8731_REG_RLINEIN  	0x01
+#define WM8731_REG_LHEADOUT 	0x02
+#define WM8731_REG_RHEADOUT 	0x03
+#define WM8731_REG_ANALOG   	0x04
+#define WM8731_REG_DIGITAL	  0x05
+#define WM8731_REG_POWERDOWN  0x06
+#define WM8731_REG_INTERFACE	0x07
+#define WM8731_REG_SAMPLING 	0x08
+#define WM8731_REG_ACTIVE   	0x09
+#define WM8731_REG_RESET      0x0F
 
-extern void codec_WM8731_hw_init(void);
 extern void codec_WM8731_hw_reset(void);
+extern void codec_WM8731_hw_init(void);
 extern void codec_WM8731_writeReg(uint8_t addr, uint16_t data);
 extern void codec_WM8731_lineInVolCtl(uint8_t vol);
 extern void codec_WM8731_headphoneVolCtl(uint16_t vol);

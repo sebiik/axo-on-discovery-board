@@ -228,18 +228,24 @@ int main(void)
     // float usb inputs, hope the host notices detach...
     palSetPadMode(GPIOA, 11, PAL_MODE_INPUT);
     palSetPadMode(GPIOA, 12, PAL_MODE_INPUT);
+
     // setup LEDs, red+green on
     palSetPadMode(LED1_PORT, LED1_PIN, PAL_MODE_OUTPUT_PUSHPULL);
     palSetPadMode(LED2_PORT, LED2_PIN, PAL_MODE_OUTPUT_PUSHPULL);
+    palSetPadMode(LED3_PORT, LED3_PIN, PAL_MODE_OUTPUT_PUSHPULL);
+    palSetPadMode(LED4_PORT, LED4_PIN, PAL_MODE_OUTPUT_PUSHPULL);
 
     palClearPad(LED1_PORT,LED1_PIN);
     palClearPad(LED2_PORT,LED2_PIN);
+    palClearPad(LED3_PORT,LED3_PIN);
+    palClearPad(LED4_PORT,LED4_PIN);
 
     chSysInit();
 
     palSetPadMode(GPIOA, 11, PAL_MODE_ALTERNATE(10));
     palSetPadMode(GPIOA, 12, PAL_MODE_ALTERNATE(10));
 
+    // SDIO pins
     palSetPadMode(GPIOC, 8, PAL_MODE_ALTERNATE(12) | PAL_STM32_OSPEED_HIGHEST);
     palSetPadMode(GPIOC, 9, PAL_MODE_ALTERNATE(12) | PAL_STM32_OSPEED_HIGHEST);
     palSetPadMode(GPIOC, 10, PAL_MODE_ALTERNATE(12) | PAL_STM32_OSPEED_HIGHEST);
