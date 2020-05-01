@@ -34,24 +34,21 @@ int32_t rbuf[BUFSIZE*2] __attribute__ ((section (".sram2")));
 int32_t rbuf2[BUFSIZE*2] __attribute__ ((section (".sram2")));
 
 void codec_init(void) {
+
 #if (BOARD_STM32F4DISCOVERY)
   codec_CS43L22_i2s_init_48k();
   codec_CS43L22_hw_init();
   codec_CS43L22_pwrCtl(1);
+
 #elif (BOARD_STM32F4DISCOVERY_WM8731)
   codec_WM8731_i2s_init_48k();
   codec_WM8731_hw_init();
   // power up codec
   codec_WM8731_pwrCtl(1);
+
   // unmute codec
   codec_WM8731_muteCtl(0);
-/*
-  while(1){
-//    chThdSleepMilliseconds(100);
-    codec_CS43L22_sendBeep();
-    chThdSleepMilliseconds(100);
-  }
-*/
+
 #else
 #error "BOARD_ not defined"
 #endif
