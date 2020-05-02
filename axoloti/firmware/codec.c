@@ -41,6 +41,7 @@ void codec_init(void) {
   codec_CS43L22_pwrCtl(1);
 
 #elif (BOARD_STM32F4DISCOVERY_WM8731)
+
   codec_WM8731_i2s_init_48k();
   codec_WM8731_hw_init();
   // power up codec
@@ -48,6 +49,7 @@ void codec_init(void) {
 
   // unmute codec
   codec_WM8731_muteCtl(0);
+
 
 #else
 #error "BOARD_ not defined"

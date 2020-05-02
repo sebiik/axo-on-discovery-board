@@ -600,6 +600,7 @@ void codec_ADAU1961_i2s_init(uint16_t sampleRate) {
   CODEC_ADAU1961_I2Sext->I2SCFGR |= SPI_I2SCFGR_I2SE;
 }
 
+
 void codec_ADAU1961_Stop(void) {
   CODEC_ADAU1961_I2S->I2SCFGR = 0;
   CODEC_ADAU1961_I2Sext->I2SCFGR = 0;

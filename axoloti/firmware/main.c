@@ -17,7 +17,6 @@
  */
 
 #include "axoloti_defines.h"
-
 #include "ch.h"
 #include "hal.h"
 #include "chprintf.h"
@@ -32,9 +31,7 @@
 #include "codec.h"
 #include "ui.h"
 #include "midi.h"
-
-#include "sdcard.h" //seb
-
+#include "sdcard.h"
 #include "patch.h"
 #include "pconnection.h"
 #include "axoloti_control.h"
@@ -82,7 +79,7 @@ int main(void) {
 
   halInit();
   chSysInit();
-  sdcard_init(); //TODO: disable this
+  sdcard_init();
   sysmon_init();
 
 #if ENABLE_SERIAL_DEBUG
@@ -114,9 +111,10 @@ int main(void) {
   axoloti_board_init();
   adc_init();
 
-#if (USE_EXTERNAL_EEPROM) //seb
-  eeprom_init(); //seb
-#endif //seb
+#if (USE_EXTERNAL_EEPROM)
+  //seb
+  eeprom_init();
+#endif
 
   axoloti_math_init();
   midi_init();
