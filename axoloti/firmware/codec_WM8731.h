@@ -23,6 +23,7 @@
 #define WM8731_REG_ACTIVE   	0x09
 #define WM8731_REG_RESET      0x0F
 
+extern void codec_WM8731_i2s_init_48k(void);
 extern void codec_WM8731_hw_reset(void);
 extern void codec_WM8731_hw_init(void);
 extern void codec_WM8731_writeReg(uint8_t addr, uint16_t data);
@@ -31,7 +32,9 @@ extern void codec_WM8731_headphoneVolCtl(uint16_t vol);
 extern void codec_WM8731_pwrCtl(uint8_t pwr);
 extern void codec_WM8731_muteCtl(uint8_t mute);
 extern void codec_WM8731_activeCtl(uint8_t active);
-extern void codec_WM8731_i2s_init_48k(void);
-extern void codec_WM8721_I2CStop(void);
+extern void codec_WM8731_I2CStart(void);
+extern void codec_WM8731_I2CStop(void);
+extern void codec_WM8731_I2SStop(void);
+extern void codec_WM8731_sendStandardCfg(void);
 
 #endif /* CODEC_H_ */
