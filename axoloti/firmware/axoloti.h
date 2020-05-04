@@ -39,18 +39,7 @@
 
 void axoloti_init(void);
 
-extern void codec_WM8731_i2s_init_48k(void);
-extern void codec_WM8731_hw_reset(void);
-extern void codec_WM8731_hw_init(void);
-extern void codec_WM8731_writeReg(uint8_t addr, uint16_t data);
-extern void codec_WM8731_lineInVolCtl(uint8_t vol);
-extern void codec_WM8731_headphoneVolCtl(uint16_t vol);
-extern void codec_WM8731_pwrCtl(uint8_t pwr);
-extern void codec_WM8731_muteCtl(uint8_t mute);
-extern void codec_WM8731_activeCtl(uint8_t active);
-extern void codec_WM8731_I2CStart(void);
-extern void codec_WM8731_I2CStop(void);
-extern void codec_WM8731_sendStandardCfg(void);
+extern bool_t codec_WM8731_writeReg(uint8_t addr, uint16_t data);
 
 void LogTextMessage(const char* format, ...);
 

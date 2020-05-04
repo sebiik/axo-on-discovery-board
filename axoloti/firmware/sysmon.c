@@ -58,10 +58,8 @@ __attribute__((noreturn))
 #endif
     if (isEnabled) {
       palWritePad(LED1_PORT, LED1_PIN, (pattern >> pi) & 1);
-      palWritePad(LED4_PORT, LED4_PIN, (pattern >> pi) & 1);
       pi++;
       palWritePad(LED2_PORT, LED2_PIN, (pattern >> pi) & 1);
-      palWritePad(LED3_PORT, LED3_PIN, (pattern >> pi) & 1);
       pi++;
 
       if (pi > 31) {
