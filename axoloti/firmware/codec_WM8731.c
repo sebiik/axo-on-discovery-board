@@ -9,8 +9,7 @@ static const I2CConfig i2cfgWM = {OPMODE_I2C, 100000, STD_DUTY_CYCLE, };
 
 #define I2S2EXT_RX_DMA_CHANNEL STM32_DMA_GETCHANNEL(STM32_SPI_SPI2_RX_DMA_STREAM, 3)
 
-// static uint8_t i2c_txbuf[2] __attribute__ ((section (".sram2")));
-static uint8_t i2c_txbuf[2];
+static uint8_t i2c_txbuf[2] __attribute__ ((section (".sram2")));
 
 
 void codec_WM8731_hw_reset(void) {
@@ -34,7 +33,7 @@ void codec_WM8731_hw_init(void) {
   // codec_WM8731_writeReg(WM8731_REG_INTERFACE, 0b000001110);
 
   // Slave Mode, I2S Data Format, 24bit, 48k
-  codec_WM8731_writeReg(WM8731_REG_INTERFACE, 0b000001010);
+  // codec_WM8731_writeReg(WM8731_REG_INTERFACE, 0b000001010);
 
   // 256fs, 48khz in, 48khz out, MCLK/2
   codec_WM8731_writeReg(WM8731_REG_SAMPLING,  0b001000000);
@@ -122,8 +121,6 @@ static void codec_WM8731_dma_init(void) {
 
 void codec_WM8731_i2s_init_48k(void) {
 
-	//TODO: | PAL_STM32_OSPEED_HIGHEST?
-	//TODO: | PIN_MODE_NOPULL?
 	palSetPadMode(GPIOB, 12, PAL_MODE_OUTPUT_PUSHPULL);
 	palSetPadMode(GPIOB, 12, PAL_MODE_ALTERNATE(5)); // WS
 
@@ -143,7 +140,7 @@ void codec_WM8731_i2s_init_48k(void) {
 	WM8731_I2S_ENABLE;
 
 	WM8731_I2S->I2SCFGR = SPI_I2SCFGR_I2SMOD | SPI_I2SCFGR_I2SCFG_1
-			| SPI_I2SCFGR_DATLEN_1;
+			| SPI_I2SCFGR_DATLEN_1; /* MASTER TRANSMIT */
 	WM8731_I2S->I2SPR = SPI_I2SPR_MCKOE | SPI_I2SPR_ODD | 3;
 
   WM8731_I2SEXT->I2SCFGR = SPI_I2SCFGR_I2SMOD | SPI_I2SCFGR_I2SCFG_0 | SPI_I2SCFGR_DATLEN_1; /* SLAVE RECEIVE*/
@@ -164,9 +161,16 @@ void codec_WM8731_writeReg(uint8_t addr, uint16_t data) {
 
 	i2c_txbuf[0] = (addr << 1) | ((data >> 8) & 1);
 	i2c_txbuf[1] = data & 0xFF;
+	msg_t status;
+	uint8_t attempt = 0;
+	systime_t tmo = MS2ST(10);
 
-	i2cMasterTransmitTimeout(&WM8731_I2C, WM8731_I2C_ADDR, i2c_txbuf, 2, NULL, 0, MS2ST(4));
-  chThdSleepMilliseconds(1);
+	status = i2cMasterTransmitTimeout(&WM8731_I2C, WM8731_I2C_ADDR, i2c_txbuf, 2, NULL, 0, tmo);
+	if ((status != RDY_OK) && (attempt < 12)) {
+		++attempt;
+		status = i2cMasterTransmitTimeout(&WM8731_I2C, WM8731_I2C_ADDR, i2c_txbuf, 2, NULL, 0, tmo);
+	}
+	chThdSleepMilliseconds(10);
 
 }
 
