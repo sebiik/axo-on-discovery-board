@@ -150,6 +150,7 @@ void sdcard_init(void) {
    };
    struct EventListener el0, el1;
    */
+  //TODO reduce OSPEED?
   palSetPadMode(GPIOC, 8, PAL_MODE_ALTERNATE(12) | PAL_STM32_OSPEED_HIGHEST); //SDIO_D0
   palSetPadMode(GPIOC, 9, PAL_MODE_ALTERNATE(12) | PAL_STM32_OSPEED_HIGHEST); //SDIO_D1
   palSetPadMode(GPIOC, 10, PAL_MODE_ALTERNATE(12) | PAL_STM32_OSPEED_HIGHEST); //SDIO_D2
