@@ -49,24 +49,24 @@
 /*===========================================================================*/
 
 
-//#define ENABLE_SERIAL_DEBUG 1
+#define ENABLE_SERIAL_DEBUG 1
 
 #ifdef ENABLE_USB_HOST
 #error conflicting pins: USB_OTG_HS and I2S
 #endif
 
-void ToggleGreen(void) {
-  palSetPadMode(GPIOD, 12, PAL_MODE_OUTPUT_PUSHPULL); palTogglePad(GPIOD, 12);
-}
-void ToggleOrange(void) {
-  palSetPadMode(GPIOD, 13, PAL_MODE_OUTPUT_PUSHPULL); palTogglePad(GPIOD, 13);
-}
-void ToggleRed(void) {
-  palSetPadMode(GPIOD, 14, PAL_MODE_OUTPUT_PUSHPULL); palTogglePad(GPIOD, 14);
-}
-void ToggleBlue(void) {
-  palSetPadMode(GPIOD, 15, PAL_MODE_OUTPUT_PUSHPULL); palTogglePad(GPIOD, 15);
-}
+// void ToggleGreen(void) {
+//   palSetPadMode(GPIOD, 12, PAL_MODE_OUTPUT_PUSHPULL); palTogglePad(GPIOD, 12);
+// }
+// void ToggleOrange(void) {
+//   palSetPadMode(GPIOD, 13, PAL_MODE_OUTPUT_PUSHPULL); palTogglePad(GPIOD, 13);
+// }
+// void ToggleRed(void) {
+//   palSetPadMode(GPIOD, 14, PAL_MODE_OUTPUT_PUSHPULL); palTogglePad(GPIOD, 14);
+// }
+// void ToggleBlue(void) {
+//   palSetPadMode(GPIOD, 15, PAL_MODE_OUTPUT_PUSHPULL); palTogglePad(GPIOD, 15);
+// }
 
 int main(void) {
   // copy vector table to SRAM1!

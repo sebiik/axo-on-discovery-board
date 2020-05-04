@@ -1,4 +1,6 @@
 #include "codec_WM8731.h"
+#include "axoloti_board.h"
+// #include "exceptions.h"
 
 const stm32_dma_stream_t* i2s_dma_tx;
 const stm32_dma_stream_t* i2s_dma_rx;
@@ -12,9 +14,11 @@ static const I2CConfig i2cfgWM = {OPMODE_I2C, 100000, STD_DUTY_CYCLE, };
 static uint8_t i2c_txbuf[2] __attribute__ ((section (".sram2")));
 
 
-void codec_WM8731_hw_reset(void) {
-	codec_WM8731_writeReg(WM8731_REG_RESET, 0x00);
-  chThdSleepMilliseconds(1);
+bool_t codec_WM8731_hw_reset(void) {
+	if (codec_WM8731_writeReg(WM8731_REG_RESET, 0x00) == RDY_OK) {
+		return true;
+	}
+	else return false;
 }
 
 
@@ -25,33 +29,49 @@ void codec_WM8731_hw_init(void) {
 
   i2cStart(&WM8731_I2C, &i2cfgWM);
 
-  codec_WM8731_hw_reset();
+	/*
+		FROM THE WM8731 DATASHEET:
+		- Switch on power supplies. By default the WM8731 is in Standby Mode, the DAC is digitally muted and the Audio Interface and Outputs are all OFF.
+		- Set all required bits in the Power Down register (0x06) to ‘0’; EXCEPT the OUTPD bit, this should be set to ‘1’ (Default).
+		- Set required values in all other registers except 0x09 (Active).
+		- Set the ‘Active’ bit in register 0x09.
+		- The last write of the sequence should be setting OUTPD to ‘0’ (active) in register 0x06, enabling the DAC signal path, free of any significant power-up noise.
+	*/
 
-	codec_WM8731_sendStandardCfg();
+	// Reg 06: Power Down Control (Clkout, Osc, OUTPD, Mic powered down) 0111 0010
+	codec_WM8731_writeReg(WM8731_REG_POWERDOWN, 0x72);
 
-  // Slave Mode, I2S Data Format, 32bit, 48k
-  // codec_WM8731_writeReg(WM8731_REG_INTERFACE, 0b000001110);
+	// Reg 00: Left Line In (0dB, mute off) 0001 0111
+	codec_WM8731_writeReg(WM8731_REG_LLINEIN,0x17);
 
-  // Slave Mode, I2S Data Format, 24bit, 48k
-  // codec_WM8731_writeReg(WM8731_REG_INTERFACE, 0b000001010);
+	// Reg 01: Right Line In (0dB, mute off) 0001 0111
+	codec_WM8731_writeReg(WM8731_REG_RLINEIN,0x17);
 
-  // 256fs, 48khz in, 48khz out, MCLK/2
-  codec_WM8731_writeReg(WM8731_REG_SAMPLING,  0b001000000);
+	// Reg 02: Left Headphone out (0dB) 0111 1001
+	codec_WM8731_writeReg(WM8731_REG_LHEADOUT,0x79);
 
-  // Keep codec powered down initially
-  codec_WM8731_pwrCtl(0);
+	// Reg 03: Right Headphone out (0dB) 0111 1001
+	codec_WM8731_writeReg(WM8731_REG_RHEADOUT,0x79);
 
-  codec_WM8731_muteCtl(0);
+	// Reg 04: Analog Audio Path Control (DAC sel, Mute Mic) 0001 0010
+	codec_WM8731_writeReg(WM8731_REG_ANALOG,0x12);
 
-  codec_WM8731_activeCtl(1);
+	// Reg 05: Digital Audio Path Control
+	codec_WM8731_writeReg(WM8731_REG_DIGITAL,0x00);
 
-  chThdSleepMilliseconds(5);
+	// Reg 07: Digital Audio Interface Format (i2s, 24-bit, slave) 0000 1010
+	codec_WM8731_writeReg(WM8731_REG_INTERFACE,0x0A);
 
-  codec_WM8731_pwrCtl(1);
+	// Reg 08: Sampling Control (Normal, 256x, 48k ADC/DAC, MCLK/2) 0100 0000
+	codec_WM8731_writeReg(WM8731_REG_SAMPLING,0x40);
 
-  // set line in and headphone out volume to 0db
-  codec_WM8731_lineInVolCtl(0b00010111);
-  codec_WM8731_headphoneVolCtl(0b001111001);
+  // Reg 09: Set ACTIVE
+	codec_WM8731_writeReg(WM8731_REG_ACTIVE, 0x01);
+
+	chThdSleepMilliseconds(5);
+
+	// Reg 06: Power Down Control (Clkout, Osc, Mic powered down) 0110 0010
+	codec_WM8731_writeReg(WM8731_REG_POWERDOWN, 0x62);
 
 }
 
@@ -157,91 +177,26 @@ void codec_WM8731_i2s_init_48k(void) {
 }
 
 
-void codec_WM8731_writeReg(uint8_t addr, uint16_t data) {
+bool_t codec_WM8731_writeReg(uint8_t addr, uint16_t data) {
 
 	i2c_txbuf[0] = (addr << 1) | ((data >> 8) & 1);
 	i2c_txbuf[1] = data & 0xFF;
-	msg_t status;
+	msg_t status = -1;
 	uint8_t attempt = 0;
-	systime_t tmo = MS2ST(10);
+	systime_t tmo = MS2ST(4);
 
-	status = i2cMasterTransmitTimeout(&WM8731_I2C, WM8731_I2C_ADDR, i2c_txbuf, 2, NULL, 0, tmo);
-	if ((status != RDY_OK) && (attempt < 12)) {
+	// Attempt to transmit up to 12 times,
+	while (attempt < 12) {
 		++attempt;
 		status = i2cMasterTransmitTimeout(&WM8731_I2C, WM8731_I2C_ADDR, i2c_txbuf, 2, NULL, 0, tmo);
+		if (status == RDY_OK)
+			return true;
+		chThdSleepMilliseconds(1);
 	}
-	chThdSleepMilliseconds(10);
-
-}
-
-
-void codec_WM8731_pwrCtl(uint8_t pwr) {
-
-	if (pwr) {
-    codec_WM8731_writeReg(WM8731_REG_POWERDOWN, 0x00);
-    // codec_WM8731_writeReg(WM8731_REG_POWERDOWN, 0x62); // 0b 0110 0010
-  }
-	else {
-    codec_WM8731_writeReg(WM8731_REG_POWERDOWN, 0x01);
-    // codec_WM8731_writeReg(WM8731_REG_POWERDOWN, 0x63); // 0b 0110 0011
-  }
-}
-
-
-void codec_WM8731_muteCtl(uint8_t mute) {
-
-	if (mute) {
-		codec_WM8731_writeReg(WM8731_REG_DIGITAL, 0x08);
-  }
-	else {
-		codec_WM8731_writeReg(WM8731_REG_DIGITAL, 0x00);
-		codec_WM8731_writeReg(WM8731_REG_ANALOG, 0x12);
-	}
-}
-
-
-void codec_WM8731_lineInVolCtl(uint8_t vol) {
-
-	if (vol <= 0x1F) {
-		codec_WM8731_writeReg(WM8731_REG_LLINEIN, vol & 0x1F);
-		codec_WM8731_writeReg(WM8731_REG_RLINEIN, vol & 0x1F);
-	}
-	else {
-		codec_WM8731_writeReg(WM8731_REG_LLINEIN, 0x1F);
-		codec_WM8731_writeReg(WM8731_REG_RLINEIN, 0x1F);
-	}
-}
-
-
-void codec_WM8731_headphoneVolCtl(uint16_t vol) {
-
-	if (vol <= 0x7F) {
-		codec_WM8731_writeReg(WM8731_REG_LHEADOUT, vol & 0x7F);
-		codec_WM8731_writeReg(WM8731_REG_RHEADOUT, vol & 0x7F);
-	}
-	else {
-		codec_WM8731_writeReg(WM8731_REG_LHEADOUT, 0x7F);
-		codec_WM8731_writeReg(WM8731_REG_RHEADOUT, 0x7F);
-	}
-}
-
-
-void codec_WM8731_activeCtl(uint8_t active) {
-
-	if (active)
-		codec_WM8731_writeReg(WM8731_REG_ACTIVE, 0x01);
-	else
-		codec_WM8731_writeReg(WM8731_REG_ACTIVE, 0x00);
-}
-
-
-void codec_WM8731_I2CStart(void) {
-  i2cStart(&WM8731_I2C, &i2cfgWM);
-}
-
-
-void codec_WM8731_I2CStop(void) {
-  i2cStop(&WM8731_I2C);
+	// Return false if unsuccessful after 12 tries, set orange LED and report exception.
+	palSetPad(LED3_PORT, LED3_PIN);
+	report_wm8731_codec_i2c_error();
+	return false;
 }
 
 
@@ -251,32 +206,4 @@ void codec_WM8731_I2SStop(void) {
   WM8731_I2SEXT->I2SCFGR = 0;
   WM8731_I2S->CR2 = 0;
   WM8731_I2SEXT->CR2 = 0;
-}
-
-
-void codec_WM8731_sendStandardCfg(void) {
-
-  codec_WM8731_hw_reset();
-  chThdSleepMilliseconds(1);
-
-  const uint16_t init_data[] = {
-    0x17,			// Reg 00: Left Line In (0dB, mute off) 0001 0111
-    0x17,			// Reg 01: Right Line In (0dB, mute off) 0001 0111
-    0x79,			// Reg 02: Left Headphone out (0dB) 0111 1001
-    0x79,			// Reg 03: Right Headphone out (0dB) 0111 1001
-    0x12,			// Reg 04: Analog Audio Path Control (DAC sel, Mute Mic) 0001 0010
-    0x00,			// Reg 05: Digital Audio Path Control
-    0x62,			// Reg 06: Power Down Control (Clkout, Osc, Mic Off) 0110 0010
-    0x0A,			// Reg 07: Digital Audio Interface Format (i2s, 24-bit, slave) 0000 1010
-    0x40,			// Reg 08: Sampling Control (Normal, 256x, 48k ADC/DAC, MCLK/2)
-    0x01			// Reg 09: Active Control
-  };
-
-  uint8_t i;
-  for (i = 0; i < 10; i++) {
-    codec_WM8731_writeReg(i, init_data[i]);
-    chThdSleepMilliseconds(10);
-  }
-  chThdSleepMilliseconds(10);
-
 }

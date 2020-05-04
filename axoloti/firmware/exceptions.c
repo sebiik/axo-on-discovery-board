@@ -50,6 +50,7 @@ typedef enum {
   brownout,
   goto_DFU,
   fatfs_error,
+  wm8731_codec_i2c_error,
   patch_load_crc_fail,
   patch_load_sdram_overflow,
   usbh_midi_ringbuffer_overflow
@@ -247,6 +248,9 @@ void exception_checkandreport(void) {
     else if (exceptiondump->type == fatfs_error) {
       LogTextMessage("file error: %s, filename:\"%s\"",fs_err_name[exceptiondump->r0],(char *)(BKPSRAM_BASE)+12);
     }
+    else if (exceptiondump->type == wm8731_codec_i2c_error) {
+      LogTextMessage("Error communicating with WM8731 codec! Is the I2C connection stable?");
+    }
     else if (exceptiondump->type == patch_load_crc_fail) {
       LogTextMessage("failed to load patch, firmware version mismatch? filename:\"%s\"",(char *)(BKPSRAM_BASE)+12);
     }
@@ -305,6 +309,13 @@ void report_fatfs_error(int errno, const char *fn) {
   exceptiondump->magicnumber = ERROR_MAGIC_NUMBER;
   exceptiondump->type = fatfs_error;
   exceptiondump->r0 = errno;
+}
+
+void report_wm8731_codec_i2c_error(void) {
+  if (exceptiondump->magicnumber == ERROR_MAGIC_NUMBER)
+    return;
+  exceptiondump->magicnumber = ERROR_MAGIC_NUMBER;
+  exceptiondump->type = wm8731_codec_i2c_error;
 }
 
 void report_patchLoadFail(const char *fn) {
