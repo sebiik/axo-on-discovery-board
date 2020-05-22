@@ -4,11 +4,11 @@
 #include "ch.h"
 #include "hal.h"
 
-#define WM8731_I2S_ENABLE rccEnableSPI2(FALSE)
+#define WM8731_I2S_ENABLE  rccEnableSPI2(FALSE)
 #define WM8731_I2S_DISABLE rccDisableSPI2(FALSE)
-#define WM8731_I2C I2CD2
-#define WM8731_I2S SPI2
-#define WM8731_I2SEXT I2S2ext
+#define WM8731_I2C         I2CD2
+#define WM8731_I2S         SPI2
+#define WM8731_I2SEXT      I2S2ext
 
 #define WM8731_I2C_ADDR       0x1A // 0x1A when CSB pin to ground, else 0x1B
 #define WM8731_REG_LLINEIN  	0x00

@@ -95,9 +95,7 @@ typedef struct {
 } I2CEepromConfig_t;
 
 /*
- ******************************************************************************
  * DEFINES
- ******************************************************************************
  */
 #if defined(SAM7_PLATFORM)
 #define EEPROM_I2C_CLOCK (MCK / (((i2cp->config->cwgr & 0xFF) + ((i2cp->config->cwgr >> 8) & 0xFF)) * (1 << ((i2cp->config->cwgr >> 16) & 7)) + 6))
@@ -110,38 +108,15 @@ typedef struct {
 #define PAGESIZE_MAX 128 // maximum size of EEPROM page that we support
 
 /*
- ******************************************************************************
- * EXTERNS
- ******************************************************************************
- */
-
-/*
- ******************************************************************************
- * GLOBAL VARIABLES
- ******************************************************************************
- */
-
-/*
- *******************************************************************************
- * LOCAL FUNCTIONS
- *******************************************************************************
- */
-/**
  * @brief   Split one uint16_t address to two uint8_t.
  *
  * @param[in] txbuf pointer to driver transmit buffer
  * @param[in] addr  uint16_t address
  */
-#define eeprom_split_addr(txbuf, addr){                                       \
-    (txbuf)[0] = ((uint8_t)((addr >> 8) & 0xFF));                              \
-    (txbuf)[1] = ((uint8_t)(addr & 0xFF));                                     \
-  }
-
-/*
- *******************************************************************************
- * EXPORTED FUNCTIONS
- *******************************************************************************
- */
+#define eeprom_split_addr(txbuf, addr) {          \
+  (txbuf)[0] = ((uint8_t)((addr >> 8) & 0xFF));   \
+  (txbuf)[1] = ((uint8_t)(addr & 0xFF));          \
+}
 
 /**
  * @brief     Calculates requred timeout.
@@ -162,8 +137,7 @@ static systime_t calc_timeout(I2CDriver *i2cp, size_t txbytes, size_t rxbytes) {
  * @param[in] offset    addres of 1-st byte to be read
  * @param[in] len       number of bytes to be red
  */
-msg_t eeprom_read(const I2CEepromConfig_t *eepcfg, uint32_t offset, size_t len)
-{
+msg_t eeprom_read(const I2CEepromConfig_t *eepcfg, uint32_t offset, size_t len) {
   msg_t status = RDY_RESET;
   systime_t tmo = calc_timeout(eepcfg->i2cp, 2, len);
 
@@ -199,8 +173,7 @@ msg_t eeprom_read(const I2CEepromConfig_t *eepcfg, uint32_t offset, size_t len)
  * @param[in] offset  addres of 1-st byte to be write
  * @param[in] len     number of bytes to be written
  */
-msg_t eeprom_write(const I2CEepromConfig_t *eepcfg, uint32_t offset, size_t len)
-{
+msg_t eeprom_write(const I2CEepromConfig_t *eepcfg, uint32_t offset, size_t len) {
   msg_t status = RDY_RESET;
   systime_t tmo = calc_timeout(eepcfg->i2cp, (len + ADDR_SIZE), 0);
 
@@ -327,8 +300,7 @@ LogTextMessage("EEprom write: done: status = %d, errors = 0x%02x",  status, i2cG
  * @brief   EEPROM init. Just start EEPROM thread.
  *
  */
-void eeprom_init(void)
-{
+void eeprom_init(void) {
   I2CEepromConfig.i2cp = NULL; /* no I2C bus configured yet. */
 
   pThreadEeprom = chThdCreateStatic(waThreadEeprom, sizeof(waThreadEeprom),
@@ -342,8 +314,7 @@ void eeprom_init(void)
  * @param[in] bus      Pointer to driver structure (I2CDx), representing port
  * @param[in] pinaddr  Address pins set on EEPROM (i.e. A0..A2)
  */
-void *eeprom_setup(enum EepromTypes type, I2CDriver *bus, uint8_t pinaddr)
-{
+void *eeprom_setup(enum EepromTypes type, I2CDriver *bus, uint8_t pinaddr) {
 /* Done by object or init
   palSetPadMode(GPIOB, 6, PAL_MODE_ALTERNATE(4) | PAL_STM32_OTYPE_OPENDRAIN);
   palSetPadMode(GPIOB, 7, PAL_MODE_ALTERNATE(4) | PAL_STM32_OTYPE_OPENDRAIN);
@@ -364,8 +335,7 @@ void *eeprom_setup(enum EepromTypes type, I2CDriver *bus, uint8_t pinaddr)
  *
  * @param[in] handle   handle to EEPROM instance
  */
-void eeprom_teardown(void *handle)
-{
+void eeprom_teardown(void *handle) {
   if (I2CEepromConfig.i2cp) i2cStop(I2CEepromConfig.i2cp);
 
   I2CEepromConfig.i2cp = NULL; // deconfigured
@@ -377,8 +347,7 @@ void eeprom_teardown(void *handle)
  * @param[in] handle    handle to Eeprom config structure
  * @param[in] bufsize   optional return value with buffer size
  */
-uint8_t *eeprom_get_pagebuf(void *handle, int *bufsize)
-{
+uint8_t *eeprom_get_pagebuf(void *handle, int *bufsize) {
   I2CEepromConfig_t *config = handle;
 
   if (config != &I2CEepromConfig) return NULL;
@@ -395,8 +364,7 @@ uint8_t *eeprom_get_pagebuf(void *handle, int *bufsize)
  * @param[in] addr      address in EEPROM of 1-st byte to be written
  * @param[in] len       number of bytes to be written
  */
-EepromStatus_t *eeprom_write_data(void *handle, uint32_t addr, size_t len)
-{
+EepromStatus_t *eeprom_write_data(void *handle, uint32_t addr, size_t len) {
   if (handle != &I2CEepromConfig) return NULL;
   if (EepromCmd.status.busy) return NULL;
 
@@ -418,8 +386,7 @@ EepromStatus_t *eeprom_write_data(void *handle, uint32_t addr, size_t len)
  * @param[in] addr      address in EEPROM of 1-st byte to be read
  * @param[in] len       number of bytes to be red
  */
-EepromStatus_t *eeprom_read_data(void *handle, uint32_t addr, size_t len)
-{
+EepromStatus_t *eeprom_read_data(void *handle, uint32_t addr, size_t len) {
   if (handle != &I2CEepromConfig) return NULL;
   if (EepromCmd.status.busy) return NULL;
 

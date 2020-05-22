@@ -48,7 +48,7 @@ void adc_configpads(void) {
   palSetPadMode(GPIOA, 2, PAL_MODE_INPUT_ANALOG);
   palSetPadMode(GPIOA, 3, PAL_MODE_INPUT_ANALOG);
 #endif
-  // don't skip GPIOA4, GPIOA5,GPIOA6,GPIOA7: accelerometer //seb: seems to be working
+  // don't skip GPIOA4,GPIOA5,GPIOA6,GPIOA7 //seb: seems to be working
   palSetPadMode(GPIOA, 4, PAL_MODE_INPUT_ANALOG);
   palSetPadMode(GPIOA, 5, PAL_MODE_INPUT_ANALOG);
   palSetPadMode(GPIOA, 6, PAL_MODE_INPUT_ANALOG);

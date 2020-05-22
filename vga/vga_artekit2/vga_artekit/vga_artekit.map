@@ -1,0 +1,1111 @@
+
+Memory Configuration
+
+Name             Origin             Length             Attributes
+sram             0x20000000         0x00020000         w !xr
+CCMRAM           0x10000000         0x00010000         xrw
+flash            0x08000000         0x00100000         xr
+*default*        0x00000000         0xffffffff
+
+Linker script and memory map
+
+LOAD main.o
+LOAD demo.o
+LOAD font5x7.o
+LOAD gdi.o
+LOAD mth.o
+LOAD sys.o
+LOAD video.o
+LOAD misc.o
+LOAD stm32f4xx_gpio.o
+LOAD stm32f4xx_dma.o
+LOAD stm32f4xx_rcc.o
+LOAD stm32f4xx_spi.o
+LOAD stm32f4xx_tim.o
+LOAD startup_stm32f4xx.o
+LOAD system_stm32f4xx.o
+
+.text           0x08000000     0x6700
+                0x08000000                . = ALIGN (0x4)
+                0x08000000                _text = .
+                0x08000000                PROVIDE (stext, .)
+ *(.isr_vector)
+ .isr_vector    0x08000000      0x188 startup_stm32f4xx.o
+                0x08000000                g_pfnVectors
+ *(.text .text.*)
+ .text          0x08000188       0x64 main.o
+                0x08000188                RCC_Configuration
+                0x080001c0                GPIO_Configuration
+                0x080001cc                main
+ .text          0x080001ec      0x70c demo.o
+                0x080001ec                demoInit
+                0x08000894                rand
+                0x080008dc                srand
+ .text          0x080008f8        0x0 font5x7.o
+ .text          0x080008f8      0xa8c gdi.o
+                0x080008f8                strLen
+                0x08000930                gdiCopyRect
+                0x08000964                gdiBitBlt
+                0x08000c00                gdiPoint
+                0x08000d00                gdiLine
+                0x08000ebc                gdiRectangle
+                0x08000f4c                gdiRectangleEx
+                0x08000f9c                gdiCircle
+                0x08001034                gdiDrawText
+                0x08001170                gdiDrawTextEx
+                0x08001220                gdiDrawWindow
+ .text          0x08001384       0x98 mth.o
+                0x08001384                mthSin
+                0x080013cc                mthCos
+ .text          0x0800141c      0x180 sys.o
+                0x080014c8                sysInitSystemTimer
+                0x08001500                sysDelay1Ms
+                0x08001530                sysDelayMs
+                0x08001568                sysTickCount
+ .text          0x0800159c      0x6a0 video.o
+                0x0800159c                TIMER_Configuration
+                0x080018c4                SPI_Configuration
+                0x08001a80                TIM1_CC_IRQHandler
+                0x08001abc                TIM2_IRQHandler
+                0x08001ae8                DMA2_Stream3_IRQHandler
+                0x08001b90                vidClearScreen
+                0x08001bec                vidInit
+ .text          0x08001c3c      0x1a4 misc.o
+                0x08001c3c                NVIC_PriorityGroupConfig
+                0x08001c60                NVIC_Init
+                0x08001d38                NVIC_SetVectorTable
+                0x08001d64                NVIC_SystemLPConfig
+                0x08001da8                SysTick_CLKSourceConfig
+ .text          0x08001de0      0x530 stm32f4xx_gpio.o
+                0x08001de0                GPIO_DeInit
+                0x08001f44                GPIO_Init
+                0x0800208c                GPIO_StructInit
+                0x080020c8                GPIO_PinLockConfig
+                0x0800210c                GPIO_ReadInputDataBit
+                0x08002148                GPIO_ReadInputData
+                0x08002164                GPIO_ReadOutputDataBit
+                0x080021a0                GPIO_ReadOutputData
+                0x080021bc                GPIO_SetBits
+                0x080021d8                GPIO_ResetBits
+                0x080021f4                GPIO_WriteBit
+                0x08002224                GPIO_Write
+                0x08002240                GPIO_ToggleBits
+                0x08002264                GPIO_PinAFConfig
+ .text          0x08002310      0x77c stm32f4xx_dma.o
+                0x08002310                DMA_DeInit
+                0x080024c4                DMA_Init
+                0x0800257c                DMA_StructInit
+                0x08002608                DMA_Cmd
+                0x08002640                DMA_PeriphIncOffsetSizeConfig
+                0x08002674                DMA_FlowControllerConfig
+                0x080026a8                DMA_SetCurrDataCounter
+                0x080026c4                DMA_GetCurrDataCounter
+                0x080026e0                DMA_DoubleBufferModeConfig
+                0x0800271c                DMA_DoubleBufferModeCmd
+                0x08002754                DMA_MemoryTargetConfig
+                0x08002780                DMA_GetCurrentMemoryTarget
+                0x080027b8                DMA_GetCmdStatus
+                0x080027f0                DMA_GetFIFOStatus
+                0x08002818                DMA_GetFlagStatus
+                0x0800289c                DMA_ClearFlag
+                0x080028f8                DMA_ITConfig
+                0x0800296c                DMA_GetITStatus
+                0x08002a30                DMA_ClearITPendingBit
+ .text          0x08002a8c      0xb9c stm32f4xx_rcc.o
+                0x08002a8c                RCC_DeInit
+                0x08002adc                RCC_HSEConfig
+                0x08002b04                RCC_WaitForHSEStartUp
+                0x08002b68                RCC_AdjustHSICalibrationValue
+                0x08002ba8                RCC_HSICmd
+                0x08002bc8                RCC_LSEConfig
+                0x08002c10                RCC_LSICmd
+                0x08002c30                RCC_PLLConfig
+                0x08002c78                RCC_PLLCmd
+                0x08002c98                RCC_PLLI2SConfig
+                0x08002cc8                RCC_PLLI2SCmd
+                0x08002ce8                RCC_ClockSecuritySystemCmd
+                0x08002d08                RCC_MCO1Config
+                0x08002d4c                RCC_MCO2Config
+                0x08002d90                RCC_SYSCLKConfig
+                0x08002dcc                RCC_GetSYSCLKSource
+                0x08002de8                RCC_HCLKConfig
+                0x08002e24                RCC_PCLK1Config
+                0x08002e60                RCC_PCLK2Config
+                0x08002ea0                RCC_GetClocksFreq
+                0x0800301c                RCC_RTCCLKConfig
+                0x08003080                RCC_RTCCLKCmd
+                0x080030a0                RCC_BackupResetCmd
+                0x080030c0                RCC_I2SCLKConfig
+                0x080030dc                RCC_AHB1PeriphClockCmd
+                0x08003120                RCC_AHB2PeriphClockCmd
+                0x08003164                RCC_AHB3PeriphClockCmd
+                0x080031a8                RCC_APB1PeriphClockCmd
+                0x080031ec                RCC_APB2PeriphClockCmd
+                0x08003230                RCC_AHB1PeriphResetCmd
+                0x08003274                RCC_AHB2PeriphResetCmd
+                0x080032b8                RCC_AHB3PeriphResetCmd
+                0x080032fc                RCC_APB1PeriphResetCmd
+                0x08003340                RCC_APB2PeriphResetCmd
+                0x08003384                RCC_AHB1PeriphClockLPModeCmd
+                0x080033c8                RCC_AHB2PeriphClockLPModeCmd
+                0x0800340c                RCC_AHB3PeriphClockLPModeCmd
+                0x08003450                RCC_APB1PeriphClockLPModeCmd
+                0x08003494                RCC_APB2PeriphClockLPModeCmd
+                0x080034d8                RCC_ITConfig
+                0x08003528                RCC_GetFlagStatus
+                0x080035ac                RCC_ClearFlag
+                0x080035c8                RCC_GetITStatus
+                0x08003608                RCC_ClearITPendingBit
+ .text          0x08003628      0x8ec stm32f4xx_spi.o
+                0x08003628                SPI_I2S_DeInit
+                0x080036a8                SPI_Init
+                0x08003740                I2S_Init
+                0x0800393c                SPI_StructInit
+                0x08003998                I2S_StructInit
+                0x080039dc                SPI_Cmd
+                0x08003a1c                I2S_Cmd
+                0x08003a5c                SPI_DataSizeConfig
+                0x08003a94                SPI_BiDirectionalLineConfig
+                0x08003ad4                SPI_NSSInternalSoftwareConfig
+                0x08003b18                SPI_SSOutputCmd
+                0x08003b58                SPI_TIModeCmd
+                0x08003b98                I2S_FullDuplexConfig
+                0x08003c44                SPI_I2S_ReceiveData
+                0x08003c60                SPI_I2S_SendData
+                0x08003c7c                SPI_CalculateCRC
+                0x08003cbc                SPI_TransmitCRC
+                0x08003ce0                SPI_GetCRC
+                0x08003d14                SPI_GetCRCPolynomial
+                0x08003d30                SPI_I2S_DMACmd
+                0x08003d7c                SPI_I2S_ITConfig
+                0x08003dec                SPI_I2S_GetFlagStatus
+                0x08003e2c                SPI_I2S_ClearFlag
+                0x08003e50                SPI_I2S_GetITStatus
+                0x08003edc                SPI_I2S_ClearITPendingBit
+ .text          0x08003f14     0x1df4 stm32f4xx_tim.o
+                0x08003f14                TIM_DeInit
+                0x08004134                TIM_TimeBaseInit
+                0x08004210                TIM_TimeBaseStructInit
+                0x0800424c                TIM_PrescalerConfig
+                0x08004274                TIM_CounterModeConfig
+                0x080042b0                TIM_SetCounter
+                0x080042cc                TIM_SetAutoreload
+                0x080042e8                TIM_GetCounter
+                0x08004300                TIM_GetPrescaler
+                0x0800431c                TIM_UpdateDisableConfig
+                0x0800435c                TIM_UpdateRequestConfig
+                0x0800439c                TIM_ARRPreloadConfig
+                0x080043dc                TIM_SelectOnePulseMode
+                0x08004414                TIM_SetClockDivision
+                0x0800444c                TIM_Cmd
+                0x0800448c                TIM_OC1Init
+                0x08004594                TIM_OC2Init
+                0x080046c4                TIM_OC3Init
+                0x080047f0                TIM_OC4Init
+                0x080048d4                TIM_OCStructInit
+                0x08004928                TIM_SelectOCxM
+                0x080049f0                TIM_SetCompare1
+                0x08004a0c                TIM_SetCompare2
+                0x08004a28                TIM_SetCompare3
+                0x08004a44                TIM_SetCompare4
+                0x08004a60                TIM_ForcedOC1Config
+                0x08004a9c                TIM_ForcedOC2Config
+                0x08004adc                TIM_ForcedOC3Config
+                0x08004b18                TIM_ForcedOC4Config
+                0x08004b58                TIM_OC1PreloadConfig
+                0x08004b94                TIM_OC2PreloadConfig
+                0x08004bd4                TIM_OC3PreloadConfig
+                0x08004c10                TIM_OC4PreloadConfig
+                0x08004c50                TIM_OC1FastConfig
+                0x08004c8c                TIM_OC2FastConfig
+                0x08004ccc                TIM_OC3FastConfig
+                0x08004d08                TIM_OC4FastConfig
+                0x08004d48                TIM_ClearOC1Ref
+                0x08004d84                TIM_ClearOC2Ref
+                0x08004dc8                TIM_ClearOC3Ref
+                0x08004e04                TIM_ClearOC4Ref
+                0x08004e48                TIM_OC1PolarityConfig
+                0x08004e84                TIM_OC1NPolarityConfig
+                0x08004ec0                TIM_OC2PolarityConfig
+                0x08004f00                TIM_OC2NPolarityConfig
+                0x08004f40                TIM_OC3PolarityConfig
+                0x08004f80                TIM_OC3NPolarityConfig
+                0x08004fc0                TIM_OC4PolarityConfig
+                0x08005000                TIM_CCxCmd
+                0x08005060                TIM_CCxNCmd
+                0x080050c0                TIM_ICInit
+                0x08005168                TIM_ICStructInit
+                0x080051a4                TIM_PWMIConfig
+                0x08005268                TIM_GetCapture1
+                0x08005280                TIM_GetCapture2
+                0x08005298                TIM_GetCapture3
+                0x080052b0                TIM_GetCapture4
+                0x080052c8                TIM_SetIC1Prescaler
+                0x08005300                TIM_SetIC2Prescaler
+                0x08005340                TIM_SetIC3Prescaler
+                0x08005378                TIM_SetIC4Prescaler
+                0x080053b8                TIM_BDTRConfig
+                0x08005414                TIM_BDTRStructInit
+                0x08005460                TIM_CtrlPWMOutputs
+                0x080054b0                TIM_SelectCOM
+                0x080054f0                TIM_CCPreloadControl
+                0x08005530                TIM_ITConfig
+                0x0800557c                TIM_GenerateEvent
+                0x08005598                TIM_GetFlagStatus
+                0x080055d8                TIM_ClearFlag
+                0x080055fc                TIM_GetITStatus
+                0x08005660                TIM_ClearITPendingBit
+                0x08005684                TIM_DMAConfig
+                0x080056b0                TIM_DMACmd
+                0x080056fc                TIM_SelectCCDMA
+                0x0800573c                TIM_InternalClockConfig
+                0x08005760                TIM_ITRxExternalClockConfig
+                0x08005790                TIM_TIxExternalClockConfig
+                0x080057e8                TIM_ETRClockMode1Config
+                0x0800583c                TIM_ETRClockMode2Config
+                0x08005870                TIM_SelectInputTrigger
+                0x080058ac                TIM_SelectOutputTrigger
+                0x080058e4                TIM_SelectSlaveMode
+                0x0800591c                TIM_SelectMasterSlaveMode
+                0x08005954                TIM_ETRConfig
+                0x080059a8                TIM_EncoderInterfaceConfig
+                0x08005a40                TIM_SelectHallSensor
+                0x08005a80                TIM_RemapConfig
+ .text          0x08005d08       0x14 startup_stm32f4xx.o
+ .text.Reset_Handler
+                0x08005d1c       0x40 startup_stm32f4xx.o
+                0x08005d1c                Reset_Handler
+ .text.Default_Handler
+                0x08005d5c        0x2 startup_stm32f4xx.o
+                0x08005d5c                RTC_Alarm_IRQHandler
+                0x08005d5c                HASH_RNG_IRQHandler
+                0x08005d5c                EXTI2_IRQHandler
+                0x08005d5c                TIM8_CC_IRQHandler
+                0x08005d5c                DebugMon_Handler
+                0x08005d5c                DMA2_Stream5_IRQHandler
+                0x08005d5c                HardFault_Handler
+                0x08005d5c                DMA1_Stream5_IRQHandler
+                0x08005d5c                SysTick_Handler
+                0x08005d5c                PVD_IRQHandler
+                0x08005d5c                SDIO_IRQHandler
+                0x08005d5c                TAMP_STAMP_IRQHandler
+                0x08005d5c                PendSV_Handler
+                0x08005d5c                NMI_Handler
+                0x08005d5c                CAN2_RX1_IRQHandler
+                0x08005d5c                EXTI3_IRQHandler
+                0x08005d5c                TIM8_TRG_COM_TIM14_IRQHandler
+                0x08005d5c                TIM1_UP_TIM10_IRQHandler
+                0x08005d5c                TIM8_UP_TIM13_IRQHandler
+                0x08005d5c                I2C3_ER_IRQHandler
+                0x08005d5c                EXTI0_IRQHandler
+                0x08005d5c                I2C2_EV_IRQHandler
+                0x08005d5c                DMA1_Stream2_IRQHandler
+                0x08005d5c                CAN1_RX0_IRQHandler
+                0x08005d5c                FPU_IRQHandler
+                0x08005d5c                OTG_HS_WKUP_IRQHandler
+                0x08005d5c                UsageFault_Handler
+                0x08005d5c                CAN2_SCE_IRQHandler
+                0x08005d5c                DMA2_Stream2_IRQHandler
+                0x08005d5c                SPI1_IRQHandler
+                0x08005d5c                TIM6_DAC_IRQHandler
+                0x08005d5c                TIM1_BRK_TIM9_IRQHandler
+                0x08005d5c                DCMI_IRQHandler
+                0x08005d5c                CAN2_RX0_IRQHandler
+                0x08005d5c                USART6_IRQHandler
+                0x08005d5c                USART3_IRQHandler
+                0x08005d5c                CRYP_IRQHandler
+                0x08005d5c                CAN1_RX1_IRQHandler
+                0x08005d5c                UART5_IRQHandler
+                0x08005d5c                DMA2_Stream0_IRQHandler
+                0x08005d5c                TIM4_IRQHandler
+                0x08005d5c                I2C1_EV_IRQHandler
+                0x08005d5c                DMA1_Stream6_IRQHandler
+                0x08005d5c                DMA1_Stream1_IRQHandler
+                0x08005d5c                UART4_IRQHandler
+                0x08005d5c                TIM3_IRQHandler
+                0x08005d5c                RCC_IRQHandler
+                0x08005d5c                TIM8_BRK_TIM12_IRQHandler
+                0x08005d5c                Default_Handler
+                0x08005d5c                EXTI15_10_IRQHandler
+                0x08005d5c                ADC_IRQHandler
+                0x08005d5c                DMA1_Stream7_IRQHandler
+                0x08005d5c                TIM7_IRQHandler
+                0x08005d5c                CAN2_TX_IRQHandler
+                0x08005d5c                TIM5_IRQHandler
+                0x08005d5c                DMA2_Stream7_IRQHandler
+                0x08005d5c                I2C3_EV_IRQHandler
+                0x08005d5c                EXTI9_5_IRQHandler
+                0x08005d5c                RTC_WKUP_IRQHandler
+                0x08005d5c                ETH_WKUP_IRQHandler
+                0x08005d5c                SPI2_IRQHandler
+                0x08005d5c                OTG_HS_EP1_IN_IRQHandler
+                0x08005d5c                MemManage_Handler
+                0x08005d5c                DMA1_Stream0_IRQHandler
+                0x08005d5c                CAN1_TX_IRQHandler
+                0x08005d5c                SVC_Handler
+                0x08005d5c                EXTI4_IRQHandler
+                0x08005d5c                FSMC_IRQHandler
+                0x08005d5c                ETH_IRQHandler
+                0x08005d5c                OTG_HS_EP1_OUT_IRQHandler
+                0x08005d5c                WWDG_IRQHandler
+                0x08005d5c                OTG_FS_WKUP_IRQHandler
+                0x08005d5c                TIM1_TRG_COM_TIM11_IRQHandler
+                0x08005d5c                OTG_HS_IRQHandler
+                0x08005d5c                EXTI1_IRQHandler
+                0x08005d5c                USART2_IRQHandler
+                0x08005d5c                I2C2_ER_IRQHandler
+                0x08005d5c                DMA2_Stream1_IRQHandler
+                0x08005d5c                CAN1_SCE_IRQHandler
+                0x08005d5c                FLASH_IRQHandler
+                0x08005d5c                DMA2_Stream4_IRQHandler
+                0x08005d5c                BusFault_Handler
+                0x08005d5c                USART1_IRQHandler
+                0x08005d5c                OTG_FS_IRQHandler
+                0x08005d5c                SPI3_IRQHandler
+                0x08005d5c                DMA1_Stream4_IRQHandler
+                0x08005d5c                I2C1_ER_IRQHandler
+                0x08005d5c                DMA2_Stream6_IRQHandler
+                0x08005d5c                DMA1_Stream3_IRQHandler
+ *fill*         0x08005d5e        0x2 00
+ .text          0x08005d60      0x270 system_stm32f4xx.o
+                0x08005d60                SystemInit
+                0x08005dbc                SystemCoreClockUpdate
+ *(.rodata .rodata.*)
+ .rodata        0x08005fd0       0xd8 demo.o
+                0x08005fd0                deBadBoys1
+                0x08005fe8                deBadBoys2
+ .rodata        0x080060a8      0x360 font5x7.o
+                0x080060a8                gdiSystemFont
+ .rodata        0x08006408       0x14 gdi.o
+                0x08006408                gdiCloseBm
+ *fill*         0x0800641c        0x4 00
+ .rodata        0x08006420      0x2e0 mth.o
+ *(.gnu.linkonce.t.*)
+ *(.glue_7)
+ .glue_7        0x00000000        0x0 linker stubs
+ *(.glue_7t)
+ .glue_7t       0x00000000        0x0 linker stubs
+ *(.gcc_except_table)
+ *(.gnu.linkonce.r.*)
+                0x08006700                . = ALIGN (0x4)
+                0x08006700                _etext = .
+                0x08006700                _sidata = _etext
+                0x08006700                PROVIDE (etext, .)
+                0x08006700                _fini = .
+ *(.fini)
+
+.vfp11_veneer   0x08006700        0x0
+ .vfp11_veneer  0x00000000        0x0 linker stubs
+
+.v4_bx          0x08006700        0x0
+ .v4_bx         0x00000000        0x0 linker stubs
+
+.data           0x20000000       0x28 load address 0x08006700
+                0x20000000                . = ALIGN (0x4)
+                0x20000000                _sdata = .
+ *(.ramfunc .ramfunc.* .fastrun .fastrun.*)
+ *(.data .data.*)
+ .data          0x20000000        0x0 main.o
+ .data          0x20000000        0x0 demo.o
+ .data          0x20000000        0x0 font5x7.o
+ .data          0x20000000        0x0 gdi.o
+ .data          0x20000000        0x0 mth.o
+ .data          0x20000000        0x4 sys.o
+                0x20000000                __timer
+ .data          0x20000004        0x0 video.o
+ .data          0x20000004        0x0 misc.o
+ .data          0x20000004        0x0 stm32f4xx_gpio.o
+ .data          0x20000004        0x0 stm32f4xx_dma.o
+ .data          0x20000004       0x10 stm32f4xx_rcc.o
+ .data          0x20000014        0x0 stm32f4xx_spi.o
+ .data          0x20000014        0x0 stm32f4xx_tim.o
+ .data          0x20000014        0x0 startup_stm32f4xx.o
+ .data          0x20000014       0x14 system_stm32f4xx.o
+                0x20000014                SystemCoreClock
+                0x20000018                AHBPrescTable
+ *(.gnu.linkonce.d.*)
+                0x20000028                . = ALIGN (0x4)
+                0x20000028                _edata = .
+
+.ARM.extab      0x20000028        0x0
+ *(.ARM.extab*)
+                0x20000028                __exidx_start = .
+
+.ARM.exidx      0x20000028        0x0
+ *(.ARM.exidx*)
+                0x20000028                __exidx_end = .
+                0x00006728                PROVIDE (flash_used_size, (((SIZEOF (.text) + SIZEOF (.data)) + SIZEOF (.ARM.extab)) + SIZEOF (.ARM.exidx)))
+
+.bss            0x20000040     0xef40 load address 0x08006740
+                0x20000040                . = ALIGN (0x4)
+                0x20000040                _sbss = .
+ *(.bss .bss.*)
+ .bss           0x20000040        0x0 main.o
+ .bss           0x20000040        0x4 demo.o
+ .bss           0x20000044        0x0 font5x7.o
+ .bss           0x20000044        0x0 gdi.o
+ .bss           0x20000044        0x0 mth.o
+ .bss           0x20000044        0xc sys.o
+                0x20000044                sysTiming
+                0x20000048                sysTicks
+                0x2000004c                sysDel1Ms
+ *fill*         0x20000050       0x10 00
+ .bss           0x20000060     0xef20 video.o
+                0x20000060                fb
+ .bss           0x2000ef80        0x0 misc.o
+ .bss           0x2000ef80        0x0 stm32f4xx_gpio.o
+ .bss           0x2000ef80        0x0 stm32f4xx_dma.o
+ .bss           0x2000ef80        0x0 stm32f4xx_rcc.o
+ .bss           0x2000ef80        0x0 stm32f4xx_spi.o
+ .bss           0x2000ef80        0x0 stm32f4xx_tim.o
+ .bss           0x2000ef80        0x0 startup_stm32f4xx.o
+ .bss           0x2000ef80        0x0 system_stm32f4xx.o
+ *(.gnu.linkonce.b.*)
+ *(COMMON)
+                0x2000ef80                . = ALIGN (0x4)
+                0x2000ef80                _ebss = .
+                0x2000ef80                end = .
+                0x20020000                PROVIDE (_estack, 0x20020000)
+OUTPUT(vga_artekit.elf elf32-littlearm)
+
+.debug_abbrev   0x00000000     0x114f
+ .debug_abbrev  0x00000000       0x91 main.o
+ .debug_abbrev  0x00000091      0x108 demo.o
+ .debug_abbrev  0x00000199       0x61 font5x7.o
+ .debug_abbrev  0x000001fa      0x1a7 gdi.o
+ .debug_abbrev  0x000003a1       0xc8 mth.o
+ .debug_abbrev  0x00000469      0x1a2 sys.o
+ .debug_abbrev  0x0000060b      0x1a0 video.o
+ .debug_abbrev  0x000007ab      0x124 misc.o
+ .debug_abbrev  0x000008cf      0x180 stm32f4xx_gpio.o
+ .debug_abbrev  0x00000a4f      0x14c stm32f4xx_dma.o
+ .debug_abbrev  0x00000b9b      0x1b5 stm32f4xx_rcc.o
+ .debug_abbrev  0x00000d50      0x15e stm32f4xx_spi.o
+ .debug_abbrev  0x00000eae      0x161 stm32f4xx_tim.o
+ .debug_abbrev  0x0000100f      0x140 system_stm32f4xx.o
+
+.debug_info     0x00000000     0x7378
+ .debug_info    0x00000000       0xfc main.o
+ .debug_info    0x000000fc      0x202 demo.o
+ .debug_info    0x000002fe       0x82 font5x7.o
+ .debug_info    0x00000380      0x830 gdi.o
+ .debug_info    0x00000bb0      0x168 mth.o
+ .debug_info    0x00000d18      0x810 sys.o
+ .debug_info    0x00001528      0xdc0 video.o
+ .debug_info    0x000022e8      0x590 misc.o
+ .debug_info    0x00002878      0x638 stm32f4xx_gpio.o
+ .debug_info    0x00002eb0      0x79f stm32f4xx_dma.o
+ .debug_info    0x0000364f      0xd20 stm32f4xx_rcc.o
+ .debug_info    0x0000436f      0xbc8 stm32f4xx_spi.o
+ .debug_info    0x00004f37     0x1e24 stm32f4xx_tim.o
+ .debug_info    0x00006d5b      0x61d system_stm32f4xx.o
+
+.debug_line     0x00000000     0x2319
+ .debug_line    0x00000000      0x160 main.o
+ .debug_line    0x00000160      0x269 demo.o
+ .debug_line    0x000003c9       0x38 font5x7.o
+ .debug_line    0x00000401      0x2d2 gdi.o
+ .debug_line    0x000006d3      0x164 mth.o
+ .debug_line    0x00000837      0x1c8 sys.o
+ .debug_line    0x000009ff      0x2e2 video.o
+ .debug_line    0x00000ce1      0x226 misc.o
+ .debug_line    0x00000f07      0x2a7 stm32f4xx_gpio.o
+ .debug_line    0x000011ae      0x30d stm32f4xx_dma.o
+ .debug_line    0x000014bb      0x382 stm32f4xx_rcc.o
+ .debug_line    0x0000183d      0x32a stm32f4xx_spi.o
+ .debug_line    0x00001b67      0x5e9 stm32f4xx_tim.o
+ .debug_line    0x00002150      0x1c9 system_stm32f4xx.o
+
+.debug_loc      0x00000000     0x328f
+ .debug_loc     0x00000000       0x84 main.o
+ .debug_loc     0x00000084       0x9c demo.o
+ .debug_loc     0x00000120      0x26b gdi.o
+ .debug_loc     0x0000038b       0x70 mth.o
+ .debug_loc     0x000003fb      0x12c sys.o
+ .debug_loc     0x00000527      0x168 video.o
+ .debug_loc     0x0000068f      0x118 misc.o
+ .debug_loc     0x000007a7      0x310 stm32f4xx_gpio.o
+ .debug_loc     0x00000ab7      0x428 stm32f4xx_dma.o
+ .debug_loc     0x00000edf      0x97c stm32f4xx_rcc.o
+ .debug_loc     0x0000185b      0x578 stm32f4xx_spi.o
+ .debug_loc     0x00001dd3     0x1420 stm32f4xx_tim.o
+ .debug_loc     0x000031f3       0x9c system_stm32f4xx.o
+
+.debug_pubnames
+                0x00000000     0x14c4
+ .debug_pubnames
+                0x00000000       0x48 main.o
+ .debug_pubnames
+                0x00000048       0x50 demo.o
+ .debug_pubnames
+                0x00000098       0x24 font5x7.o
+ .debug_pubnames
+                0x000000bc       0xc9 gdi.o
+ .debug_pubnames
+                0x00000185       0x28 mth.o
+ .debug_pubnames
+                0x000001ad       0x8e sys.o
+ .debug_pubnames
+                0x0000023b       0xad video.o
+ .debug_pubnames
+                0x000002e8       0x89 misc.o
+ .debug_pubnames
+                0x00000371      0x12d stm32f4xx_gpio.o
+ .debug_pubnames
+                0x0000049e      0x1c9 stm32f4xx_dma.o
+ .debug_pubnames
+                0x00000667      0x417 stm32f4xx_rcc.o
+ .debug_pubnames
+                0x00000a7e      0x221 stm32f4xx_spi.o
+ .debug_pubnames
+                0x00000c9f      0x7c4 stm32f4xx_tim.o
+ .debug_pubnames
+                0x00001463       0x61 system_stm32f4xx.o
+
+.debug_pubtypes
+                0x00000000      0x8bd
+ .debug_pubtypes
+                0x00000000       0x2b main.o
+ .debug_pubtypes
+                0x0000002b       0x55 demo.o
+ .debug_pubtypes
+                0x00000080       0x19 font5x7.o
+ .debug_pubtypes
+                0x00000099       0xba gdi.o
+ .debug_pubtypes
+                0x00000153       0x4f mth.o
+ .debug_pubtypes
+                0x000001a2       0xa7 sys.o
+ .debug_pubtypes
+                0x00000249      0x1aa video.o
+ .debug_pubtypes
+                0x000003f3       0x8c misc.o
+ .debug_pubtypes
+                0x0000047f       0xce stm32f4xx_gpio.o
+ .debug_pubtypes
+                0x0000054d       0xa3 stm32f4xx_dma.o
+ .debug_pubtypes
+                0x000005f0       0xaa stm32f4xx_rcc.o
+ .debug_pubtypes
+                0x0000069a       0xbc stm32f4xx_spi.o
+ .debug_pubtypes
+                0x00000756       0xe4 stm32f4xx_tim.o
+ .debug_pubtypes
+                0x0000083a       0x83 system_stm32f4xx.o
+
+.debug_aranges  0x00000000      0x1a0
+ .debug_aranges
+                0x00000000       0x20 main.o
+ .debug_aranges
+                0x00000020       0x20 demo.o
+ .debug_aranges
+                0x00000040       0x20 gdi.o
+ .debug_aranges
+                0x00000060       0x20 mth.o
+ .debug_aranges
+                0x00000080       0x20 sys.o
+ .debug_aranges
+                0x000000a0       0x20 video.o
+ .debug_aranges
+                0x000000c0       0x20 misc.o
+ .debug_aranges
+                0x000000e0       0x20 stm32f4xx_gpio.o
+ .debug_aranges
+                0x00000100       0x20 stm32f4xx_dma.o
+ .debug_aranges
+                0x00000120       0x20 stm32f4xx_rcc.o
+ .debug_aranges
+                0x00000140       0x20 stm32f4xx_spi.o
+ .debug_aranges
+                0x00000160       0x20 stm32f4xx_tim.o
+ .debug_aranges
+                0x00000180       0x20 system_stm32f4xx.o
+
+.debug_str      0x00000000     0x28db
+ .debug_str     0x00000000       0xd6 main.o
+                                0x112 (size before relaxing)
+ .debug_str     0x000000d6       0x43 demo.o
+                                0x11e (size before relaxing)
+ .debug_str     0x00000119       0x18 font5x7.o
+                                 0x85 (size before relaxing)
+ .debug_str     0x00000131       0xf0 gdi.o
+                                0x1e9 (size before relaxing)
+ .debug_str     0x00000221       0x1e mth.o
+                                 0xfe (size before relaxing)
+ .debug_str     0x0000023f      0x678 sys.o
+                                0x769 (size before relaxing)
+ .debug_str     0x000008b7      0x6c1 video.o
+                                0xcff (size before relaxing)
+ .debug_str     0x00000f78      0x134 misc.o
+                                0x34e (size before relaxing)
+ .debug_str     0x000010ac      0x1c5 stm32f4xx_gpio.o
+                                0x418 (size before relaxing)
+ .debug_str     0x00001271      0x271 stm32f4xx_dma.o
+                                0x4c1 (size before relaxing)
+ .debug_str     0x000014e2      0x64d stm32f4xx_rcc.o
+                                0x7c5 (size before relaxing)
+ .debug_str     0x00001b2f      0x315 stm32f4xx_spi.o
+                                0x5ff (size before relaxing)
+ .debug_str     0x00001e44      0xa16 stm32f4xx_tim.o
+                                0xd45 (size before relaxing)
+ .debug_str     0x0000285a       0x81 system_stm32f4xx.o
+                                0x2f8 (size before relaxing)
+
+.comment        0x00000000       0x2a
+ .comment       0x00000000       0x2a main.o
+                                 0x2b (size before relaxing)
+ .comment       0x00000000       0x2b demo.o
+ .comment       0x00000000       0x2b font5x7.o
+ .comment       0x00000000       0x2b gdi.o
+ .comment       0x00000000       0x2b mth.o
+ .comment       0x00000000       0x2b sys.o
+ .comment       0x00000000       0x2b video.o
+ .comment       0x00000000       0x2b misc.o
+ .comment       0x00000000       0x2b stm32f4xx_gpio.o
+ .comment       0x00000000       0x2b stm32f4xx_dma.o
+ .comment       0x00000000       0x2b stm32f4xx_rcc.o
+ .comment       0x00000000       0x2b stm32f4xx_spi.o
+ .comment       0x00000000       0x2b stm32f4xx_tim.o
+ .comment       0x00000000       0x2b system_stm32f4xx.o
+
+.ARM.attributes
+                0x00000000       0x2f
+ .ARM.attributes
+                0x00000000       0x31 main.o
+ .ARM.attributes
+                0x00000031       0x31 demo.o
+ .ARM.attributes
+                0x00000062       0x31 font5x7.o
+ .ARM.attributes
+                0x00000093       0x31 gdi.o
+ .ARM.attributes
+                0x000000c4       0x31 mth.o
+ .ARM.attributes
+                0x000000f5       0x31 sys.o
+ .ARM.attributes
+                0x00000126       0x31 video.o
+ .ARM.attributes
+                0x00000157       0x31 misc.o
+ .ARM.attributes
+                0x00000188       0x31 stm32f4xx_gpio.o
+ .ARM.attributes
+                0x000001b9       0x31 stm32f4xx_dma.o
+ .ARM.attributes
+                0x000001ea       0x31 stm32f4xx_rcc.o
+ .ARM.attributes
+                0x0000021b       0x31 stm32f4xx_spi.o
+ .ARM.attributes
+                0x0000024c       0x31 stm32f4xx_tim.o
+ .ARM.attributes
+                0x0000027d       0x21 startup_stm32f4xx.o
+ .ARM.attributes
+                0x0000029e       0x31 system_stm32f4xx.o
+
+.debug_frame    0x00000000     0x1aa0
+ .debug_frame   0x00000000       0x60 main.o
+ .debug_frame   0x00000060       0x64 demo.o
+ .debug_frame   0x000000c4      0x164 gdi.o
+ .debug_frame   0x00000228       0x48 mth.o
+ .debug_frame   0x00000270       0xb8 sys.o
+ .debug_frame   0x00000328       0xd4 video.o
+ .debug_frame   0x000003fc       0x9c misc.o
+ .debug_frame   0x00000498      0x19c stm32f4xx_gpio.o
+ .debug_frame   0x00000634      0x224 stm32f4xx_dma.o
+ .debug_frame   0x00000858      0x4d8 stm32f4xx_rcc.o
+ .debug_frame   0x00000d30      0x2d0 stm32f4xx_spi.o
+ .debug_frame   0x00001000      0xa3c stm32f4xx_tim.o
+ .debug_frame   0x00001a3c       0x64 system_stm32f4xx.o
+
+Cross Reference Table
+
+Symbol                                            File
+ADC_IRQHandler                                    startup_stm32f4xx.o
+AHBPrescTable                                     system_stm32f4xx.o
+BusFault_Handler                                  startup_stm32f4xx.o
+CAN1_RX0_IRQHandler                               startup_stm32f4xx.o
+CAN1_RX1_IRQHandler                               startup_stm32f4xx.o
+CAN1_SCE_IRQHandler                               startup_stm32f4xx.o
+CAN1_TX_IRQHandler                                startup_stm32f4xx.o
+CAN2_RX0_IRQHandler                               startup_stm32f4xx.o
+CAN2_RX1_IRQHandler                               startup_stm32f4xx.o
+CAN2_SCE_IRQHandler                               startup_stm32f4xx.o
+CAN2_TX_IRQHandler                                startup_stm32f4xx.o
+CRYP_IRQHandler                                   startup_stm32f4xx.o
+DCMI_IRQHandler                                   startup_stm32f4xx.o
+DMA1_Stream0_IRQHandler                           startup_stm32f4xx.o
+DMA1_Stream1_IRQHandler                           startup_stm32f4xx.o
+DMA1_Stream2_IRQHandler                           startup_stm32f4xx.o
+DMA1_Stream3_IRQHandler                           startup_stm32f4xx.o
+DMA1_Stream4_IRQHandler                           startup_stm32f4xx.o
+DMA1_Stream5_IRQHandler                           startup_stm32f4xx.o
+DMA1_Stream6_IRQHandler                           startup_stm32f4xx.o
+DMA1_Stream7_IRQHandler                           startup_stm32f4xx.o
+DMA2_Stream0_IRQHandler                           startup_stm32f4xx.o
+DMA2_Stream1_IRQHandler                           startup_stm32f4xx.o
+DMA2_Stream2_IRQHandler                           startup_stm32f4xx.o
+DMA2_Stream3_IRQHandler                           video.o
+DMA2_Stream4_IRQHandler                           startup_stm32f4xx.o
+DMA2_Stream5_IRQHandler                           startup_stm32f4xx.o
+DMA2_Stream6_IRQHandler                           startup_stm32f4xx.o
+DMA2_Stream7_IRQHandler                           startup_stm32f4xx.o
+DMA_ClearFlag                                     stm32f4xx_dma.o
+DMA_ClearITPendingBit                             stm32f4xx_dma.o
+DMA_Cmd                                           stm32f4xx_dma.o
+DMA_DeInit                                        stm32f4xx_dma.o
+                                                  video.o
+DMA_DoubleBufferModeCmd                           stm32f4xx_dma.o
+DMA_DoubleBufferModeConfig                        stm32f4xx_dma.o
+DMA_FlowControllerConfig                          stm32f4xx_dma.o
+DMA_GetCmdStatus                                  stm32f4xx_dma.o
+DMA_GetCurrDataCounter                            stm32f4xx_dma.o
+DMA_GetCurrentMemoryTarget                        stm32f4xx_dma.o
+DMA_GetFIFOStatus                                 stm32f4xx_dma.o
+DMA_GetFlagStatus                                 stm32f4xx_dma.o
+DMA_GetITStatus                                   stm32f4xx_dma.o
+DMA_ITConfig                                      stm32f4xx_dma.o
+                                                  video.o
+DMA_Init                                          stm32f4xx_dma.o
+                                                  video.o
+DMA_MemoryTargetConfig                            stm32f4xx_dma.o
+DMA_PeriphIncOffsetSizeConfig                     stm32f4xx_dma.o
+DMA_SetCurrDataCounter                            stm32f4xx_dma.o
+DMA_StructInit                                    stm32f4xx_dma.o
+                                                  video.o
+DebugMon_Handler                                  startup_stm32f4xx.o
+Default_Handler                                   startup_stm32f4xx.o
+ETH_IRQHandler                                    startup_stm32f4xx.o
+ETH_WKUP_IRQHandler                               startup_stm32f4xx.o
+EXTI0_IRQHandler                                  startup_stm32f4xx.o
+EXTI15_10_IRQHandler                              startup_stm32f4xx.o
+EXTI1_IRQHandler                                  startup_stm32f4xx.o
+EXTI2_IRQHandler                                  startup_stm32f4xx.o
+EXTI3_IRQHandler                                  startup_stm32f4xx.o
+EXTI4_IRQHandler                                  startup_stm32f4xx.o
+EXTI9_5_IRQHandler                                startup_stm32f4xx.o
+FLASH_IRQHandler                                  startup_stm32f4xx.o
+FPU_IRQHandler                                    startup_stm32f4xx.o
+FSMC_IRQHandler                                   startup_stm32f4xx.o
+GPIO_Configuration                                main.o
+GPIO_DeInit                                       stm32f4xx_gpio.o
+GPIO_Init                                         stm32f4xx_gpio.o
+                                                  video.o
+GPIO_PinAFConfig                                  stm32f4xx_gpio.o
+                                                  video.o
+GPIO_PinLockConfig                                stm32f4xx_gpio.o
+GPIO_ReadInputData                                stm32f4xx_gpio.o
+GPIO_ReadInputDataBit                             stm32f4xx_gpio.o
+GPIO_ReadOutputData                               stm32f4xx_gpio.o
+GPIO_ReadOutputDataBit                            stm32f4xx_gpio.o
+GPIO_ResetBits                                    stm32f4xx_gpio.o
+GPIO_SetBits                                      stm32f4xx_gpio.o
+                                                  video.o
+GPIO_StructInit                                   stm32f4xx_gpio.o
+GPIO_ToggleBits                                   stm32f4xx_gpio.o
+GPIO_Write                                        stm32f4xx_gpio.o
+GPIO_WriteBit                                     stm32f4xx_gpio.o
+HASH_RNG_IRQHandler                               startup_stm32f4xx.o
+HardFault_Handler                                 startup_stm32f4xx.o
+I2C1_ER_IRQHandler                                startup_stm32f4xx.o
+I2C1_EV_IRQHandler                                startup_stm32f4xx.o
+I2C2_ER_IRQHandler                                startup_stm32f4xx.o
+I2C2_EV_IRQHandler                                startup_stm32f4xx.o
+I2C3_ER_IRQHandler                                startup_stm32f4xx.o
+I2C3_EV_IRQHandler                                startup_stm32f4xx.o
+I2S_Cmd                                           stm32f4xx_spi.o
+I2S_FullDuplexConfig                              stm32f4xx_spi.o
+I2S_Init                                          stm32f4xx_spi.o
+I2S_StructInit                                    stm32f4xx_spi.o
+MemManage_Handler                                 startup_stm32f4xx.o
+NMI_Handler                                       startup_stm32f4xx.o
+NVIC_Init                                         misc.o
+                                                  video.o
+NVIC_PriorityGroupConfig                          misc.o
+NVIC_SetVectorTable                               misc.o
+NVIC_SystemLPConfig                               misc.o
+OTG_FS_IRQHandler                                 startup_stm32f4xx.o
+OTG_FS_WKUP_IRQHandler                            startup_stm32f4xx.o
+OTG_HS_EP1_IN_IRQHandler                          startup_stm32f4xx.o
+OTG_HS_EP1_OUT_IRQHandler                         startup_stm32f4xx.o
+OTG_HS_IRQHandler                                 startup_stm32f4xx.o
+OTG_HS_WKUP_IRQHandler                            startup_stm32f4xx.o
+PVD_IRQHandler                                    startup_stm32f4xx.o
+PendSV_Handler                                    startup_stm32f4xx.o
+RCC_AHB1PeriphClockCmd                            stm32f4xx_rcc.o
+                                                  main.o
+RCC_AHB1PeriphClockLPModeCmd                      stm32f4xx_rcc.o
+RCC_AHB1PeriphResetCmd                            stm32f4xx_rcc.o
+                                                  stm32f4xx_gpio.o
+RCC_AHB2PeriphClockCmd                            stm32f4xx_rcc.o
+RCC_AHB2PeriphClockLPModeCmd                      stm32f4xx_rcc.o
+RCC_AHB2PeriphResetCmd                            stm32f4xx_rcc.o
+RCC_AHB3PeriphClockCmd                            stm32f4xx_rcc.o
+RCC_AHB3PeriphClockLPModeCmd                      stm32f4xx_rcc.o
+RCC_AHB3PeriphResetCmd                            stm32f4xx_rcc.o
+RCC_APB1PeriphClockCmd                            stm32f4xx_rcc.o
+                                                  main.o
+RCC_APB1PeriphClockLPModeCmd                      stm32f4xx_rcc.o
+RCC_APB1PeriphResetCmd                            stm32f4xx_rcc.o
+                                                  stm32f4xx_tim.o
+                                                  stm32f4xx_spi.o
+RCC_APB2PeriphClockCmd                            stm32f4xx_rcc.o
+                                                  main.o
+RCC_APB2PeriphClockLPModeCmd                      stm32f4xx_rcc.o
+RCC_APB2PeriphResetCmd                            stm32f4xx_rcc.o
+                                                  stm32f4xx_tim.o
+                                                  stm32f4xx_spi.o
+RCC_AdjustHSICalibrationValue                     stm32f4xx_rcc.o
+RCC_BackupResetCmd                                stm32f4xx_rcc.o
+RCC_ClearFlag                                     stm32f4xx_rcc.o
+RCC_ClearITPendingBit                             stm32f4xx_rcc.o
+RCC_ClockSecuritySystemCmd                        stm32f4xx_rcc.o
+RCC_Configuration                                 main.o
+RCC_DeInit                                        stm32f4xx_rcc.o
+RCC_GetClocksFreq                                 stm32f4xx_rcc.o
+RCC_GetFlagStatus                                 stm32f4xx_rcc.o
+RCC_GetITStatus                                   stm32f4xx_rcc.o
+RCC_GetSYSCLKSource                               stm32f4xx_rcc.o
+RCC_HCLKConfig                                    stm32f4xx_rcc.o
+RCC_HSEConfig                                     stm32f4xx_rcc.o
+RCC_HSICmd                                        stm32f4xx_rcc.o
+RCC_I2SCLKConfig                                  stm32f4xx_rcc.o
+RCC_IRQHandler                                    startup_stm32f4xx.o
+RCC_ITConfig                                      stm32f4xx_rcc.o
+RCC_LSEConfig                                     stm32f4xx_rcc.o
+RCC_LSICmd                                        stm32f4xx_rcc.o
+RCC_MCO1Config                                    stm32f4xx_rcc.o
+RCC_MCO2Config                                    stm32f4xx_rcc.o
+RCC_PCLK1Config                                   stm32f4xx_rcc.o
+RCC_PCLK2Config                                   stm32f4xx_rcc.o
+RCC_PLLCmd                                        stm32f4xx_rcc.o
+RCC_PLLConfig                                     stm32f4xx_rcc.o
+RCC_PLLI2SCmd                                     stm32f4xx_rcc.o
+RCC_PLLI2SConfig                                  stm32f4xx_rcc.o
+RCC_RTCCLKCmd                                     stm32f4xx_rcc.o
+RCC_RTCCLKConfig                                  stm32f4xx_rcc.o
+RCC_SYSCLKConfig                                  stm32f4xx_rcc.o
+RCC_WaitForHSEStartUp                             stm32f4xx_rcc.o
+RTC_Alarm_IRQHandler                              startup_stm32f4xx.o
+RTC_WKUP_IRQHandler                               startup_stm32f4xx.o
+Reset_Handler                                     startup_stm32f4xx.o
+SDIO_IRQHandler                                   startup_stm32f4xx.o
+SPI1_IRQHandler                                   startup_stm32f4xx.o
+SPI2_IRQHandler                                   startup_stm32f4xx.o
+SPI3_IRQHandler                                   startup_stm32f4xx.o
+SPI_BiDirectionalLineConfig                       stm32f4xx_spi.o
+SPI_CalculateCRC                                  stm32f4xx_spi.o
+                                                  video.o
+SPI_Cmd                                           stm32f4xx_spi.o
+                                                  video.o
+SPI_Configuration                                 video.o
+SPI_DataSizeConfig                                stm32f4xx_spi.o
+SPI_GetCRC                                        stm32f4xx_spi.o
+SPI_GetCRCPolynomial                              stm32f4xx_spi.o
+SPI_I2S_ClearFlag                                 stm32f4xx_spi.o
+SPI_I2S_ClearITPendingBit                         stm32f4xx_spi.o
+SPI_I2S_DMACmd                                    stm32f4xx_spi.o
+                                                  video.o
+SPI_I2S_DeInit                                    stm32f4xx_spi.o
+                                                  video.o
+SPI_I2S_GetFlagStatus                             stm32f4xx_spi.o
+SPI_I2S_GetITStatus                               stm32f4xx_spi.o
+SPI_I2S_ITConfig                                  stm32f4xx_spi.o
+SPI_I2S_ReceiveData                               stm32f4xx_spi.o
+SPI_I2S_SendData                                  stm32f4xx_spi.o
+SPI_Init                                          stm32f4xx_spi.o
+                                                  video.o
+SPI_NSSInternalSoftwareConfig                     stm32f4xx_spi.o
+SPI_SSOutputCmd                                   stm32f4xx_spi.o
+SPI_StructInit                                    stm32f4xx_spi.o
+                                                  video.o
+SPI_TIModeCmd                                     stm32f4xx_spi.o
+SPI_TransmitCRC                                   stm32f4xx_spi.o
+SVC_Handler                                       startup_stm32f4xx.o
+SysTick_CLKSourceConfig                           misc.o
+SysTick_Handler                                   startup_stm32f4xx.o
+SystemCoreClock                                   system_stm32f4xx.o
+                                                  video.o
+                                                  sys.o
+SystemCoreClockUpdate                             system_stm32f4xx.o
+SystemInit                                        system_stm32f4xx.o
+                                                  main.o
+TAMP_STAMP_IRQHandler                             startup_stm32f4xx.o
+TIM1_BRK_TIM9_IRQHandler                          startup_stm32f4xx.o
+TIM1_CC_IRQHandler                                video.o
+TIM1_TRG_COM_TIM11_IRQHandler                     startup_stm32f4xx.o
+TIM1_UP_TIM10_IRQHandler                          startup_stm32f4xx.o
+TIM2_IRQHandler                                   video.o
+TIM3_IRQHandler                                   startup_stm32f4xx.o
+TIM4_IRQHandler                                   startup_stm32f4xx.o
+TIM5_IRQHandler                                   startup_stm32f4xx.o
+TIM6_DAC_IRQHandler                               startup_stm32f4xx.o
+TIM7_IRQHandler                                   startup_stm32f4xx.o
+TIM8_BRK_TIM12_IRQHandler                         startup_stm32f4xx.o
+TIM8_CC_IRQHandler                                startup_stm32f4xx.o
+TIM8_TRG_COM_TIM14_IRQHandler                     startup_stm32f4xx.o
+TIM8_UP_TIM13_IRQHandler                          startup_stm32f4xx.o
+TIMER_Configuration                               video.o
+TIM_ARRPreloadConfig                              stm32f4xx_tim.o
+                                                  video.o
+TIM_BDTRConfig                                    stm32f4xx_tim.o
+TIM_BDTRStructInit                                stm32f4xx_tim.o
+TIM_CCPreloadControl                              stm32f4xx_tim.o
+TIM_CCxCmd                                        stm32f4xx_tim.o
+TIM_CCxNCmd                                       stm32f4xx_tim.o
+TIM_ClearFlag                                     stm32f4xx_tim.o
+TIM_ClearITPendingBit                             stm32f4xx_tim.o
+TIM_ClearOC1Ref                                   stm32f4xx_tim.o
+TIM_ClearOC2Ref                                   stm32f4xx_tim.o
+TIM_ClearOC3Ref                                   stm32f4xx_tim.o
+TIM_ClearOC4Ref                                   stm32f4xx_tim.o
+TIM_Cmd                                           stm32f4xx_tim.o
+                                                  video.o
+TIM_CounterModeConfig                             stm32f4xx_tim.o
+TIM_CtrlPWMOutputs                                stm32f4xx_tim.o
+                                                  video.o
+TIM_DMACmd                                        stm32f4xx_tim.o
+TIM_DMAConfig                                     stm32f4xx_tim.o
+TIM_DeInit                                        stm32f4xx_tim.o
+TIM_ETRClockMode1Config                           stm32f4xx_tim.o
+TIM_ETRClockMode2Config                           stm32f4xx_tim.o
+TIM_ETRConfig                                     stm32f4xx_tim.o
+TIM_EncoderInterfaceConfig                        stm32f4xx_tim.o
+TIM_ForcedOC1Config                               stm32f4xx_tim.o
+TIM_ForcedOC2Config                               stm32f4xx_tim.o
+TIM_ForcedOC3Config                               stm32f4xx_tim.o
+TIM_ForcedOC4Config                               stm32f4xx_tim.o
+TIM_GenerateEvent                                 stm32f4xx_tim.o
+TIM_GetCapture1                                   stm32f4xx_tim.o
+TIM_GetCapture2                                   stm32f4xx_tim.o
+TIM_GetCapture3                                   stm32f4xx_tim.o
+TIM_GetCapture4                                   stm32f4xx_tim.o
+TIM_GetCounter                                    stm32f4xx_tim.o
+TIM_GetFlagStatus                                 stm32f4xx_tim.o
+TIM_GetITStatus                                   stm32f4xx_tim.o
+TIM_GetPrescaler                                  stm32f4xx_tim.o
+TIM_ICInit                                        stm32f4xx_tim.o
+TIM_ICStructInit                                  stm32f4xx_tim.o
+TIM_ITConfig                                      stm32f4xx_tim.o
+                                                  video.o
+TIM_ITRxExternalClockConfig                       stm32f4xx_tim.o
+TIM_InternalClockConfig                           stm32f4xx_tim.o
+TIM_OC1FastConfig                                 stm32f4xx_tim.o
+TIM_OC1Init                                       stm32f4xx_tim.o
+                                                  video.o
+TIM_OC1NPolarityConfig                            stm32f4xx_tim.o
+TIM_OC1PolarityConfig                             stm32f4xx_tim.o
+TIM_OC1PreloadConfig                              stm32f4xx_tim.o
+                                                  video.o
+TIM_OC2FastConfig                                 stm32f4xx_tim.o
+TIM_OC2Init                                       stm32f4xx_tim.o
+                                                  video.o
+TIM_OC2NPolarityConfig                            stm32f4xx_tim.o
+TIM_OC2PolarityConfig                             stm32f4xx_tim.o
+TIM_OC2PreloadConfig                              stm32f4xx_tim.o
+                                                  video.o
+TIM_OC3FastConfig                                 stm32f4xx_tim.o
+TIM_OC3Init                                       stm32f4xx_tim.o
+                                                  video.o
+TIM_OC3NPolarityConfig                            stm32f4xx_tim.o
+TIM_OC3PolarityConfig                             stm32f4xx_tim.o
+TIM_OC3PreloadConfig                              stm32f4xx_tim.o
+TIM_OC4FastConfig                                 stm32f4xx_tim.o
+TIM_OC4Init                                       stm32f4xx_tim.o
+TIM_OC4PolarityConfig                             stm32f4xx_tim.o
+TIM_OC4PreloadConfig                              stm32f4xx_tim.o
+TIM_OCStructInit                                  stm32f4xx_tim.o
+                                                  video.o
+TIM_PWMIConfig                                    stm32f4xx_tim.o
+TIM_PrescalerConfig                               stm32f4xx_tim.o
+TIM_RemapConfig                                   stm32f4xx_tim.o
+TIM_SelectCCDMA                                   stm32f4xx_tim.o
+TIM_SelectCOM                                     stm32f4xx_tim.o
+TIM_SelectHallSensor                              stm32f4xx_tim.o
+TIM_SelectInputTrigger                            stm32f4xx_tim.o
+                                                  video.o
+TIM_SelectMasterSlaveMode                         stm32f4xx_tim.o
+                                                  video.o
+TIM_SelectOCxM                                    stm32f4xx_tim.o
+TIM_SelectOnePulseMode                            stm32f4xx_tim.o
+TIM_SelectOutputTrigger                           stm32f4xx_tim.o
+                                                  video.o
+TIM_SelectSlaveMode                               stm32f4xx_tim.o
+                                                  video.o
+TIM_SetAutoreload                                 stm32f4xx_tim.o
+TIM_SetClockDivision                              stm32f4xx_tim.o
+TIM_SetCompare1                                   stm32f4xx_tim.o
+TIM_SetCompare2                                   stm32f4xx_tim.o
+TIM_SetCompare3                                   stm32f4xx_tim.o
+TIM_SetCompare4                                   stm32f4xx_tim.o
+TIM_SetCounter                                    stm32f4xx_tim.o
+TIM_SetIC1Prescaler                               stm32f4xx_tim.o
+TIM_SetIC2Prescaler                               stm32f4xx_tim.o
+TIM_SetIC3Prescaler                               stm32f4xx_tim.o
+TIM_SetIC4Prescaler                               stm32f4xx_tim.o
+TIM_TIxExternalClockConfig                        stm32f4xx_tim.o
+TIM_TimeBaseInit                                  stm32f4xx_tim.o
+                                                  video.o
+TIM_TimeBaseStructInit                            stm32f4xx_tim.o
+TIM_UpdateDisableConfig                           stm32f4xx_tim.o
+TIM_UpdateRequestConfig                           stm32f4xx_tim.o
+UART4_IRQHandler                                  startup_stm32f4xx.o
+UART5_IRQHandler                                  startup_stm32f4xx.o
+USART1_IRQHandler                                 startup_stm32f4xx.o
+USART2_IRQHandler                                 startup_stm32f4xx.o
+USART3_IRQHandler                                 startup_stm32f4xx.o
+USART6_IRQHandler                                 startup_stm32f4xx.o
+UsageFault_Handler                                startup_stm32f4xx.o
+WWDG_IRQHandler                                   startup_stm32f4xx.o
+__timer                                           sys.o
+_ebss                                             startup_stm32f4xx.o
+_edata                                            startup_stm32f4xx.o
+_estack                                           startup_stm32f4xx.o
+_sbss                                             startup_stm32f4xx.o
+_sdata                                            startup_stm32f4xx.o
+_sidata                                           startup_stm32f4xx.o
+deBadBoys1                                        demo.o
+deBadBoys2                                        demo.o
+demoInit                                          demo.o
+                                                  main.o
+fb                                                video.o
+                                                  gdi.o
+g_pfnVectors                                      startup_stm32f4xx.o
+gdiBitBlt                                         gdi.o
+                                                  demo.o
+gdiCircle                                         gdi.o
+                                                  demo.o
+gdiCloseBm                                        gdi.o
+gdiCopyRect                                       gdi.o
+gdiDrawText                                       gdi.o
+gdiDrawTextEx                                     gdi.o
+                                                  demo.o
+gdiDrawWindow                                     gdi.o
+gdiLine                                           gdi.o
+                                                  demo.o
+gdiPoint                                          gdi.o
+                                                  demo.o
+gdiRectangle                                      gdi.o
+                                                  demo.o
+gdiRectangleEx                                    gdi.o
+gdiSystemFont                                     font5x7.o
+                                                  gdi.o
+main                                              main.o
+                                                  startup_stm32f4xx.o
+mthCos                                            mth.o
+                                                  gdi.o
+mthSin                                            mth.o
+                                                  gdi.o
+rand                                              demo.o
+srand                                             demo.o
+strLen                                            gdi.o
+sysDel1Ms                                         sys.o
+sysDelay1Ms                                       sys.o
+sysDelayMs                                        sys.o
+                                                  demo.o
+sysInitSystemTimer                                sys.o
+sysTickCount                                      sys.o
+sysTicks                                          sys.o
+sysTiming                                         sys.o
+vidClearScreen                                    video.o
+                                                  demo.o
+vidInit                                           video.o
+                                                  main.o

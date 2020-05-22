@@ -1,0 +1,160 @@
+EESchema Schematic File Version 4
+EELAYER 30 0
+EELAYER END
+$Descr A4 11693 8268
+encoding utf-8
+Sheet 3 3
+Title ""
+Date ""
+Rev ""
+Comp ""
+Comment1 ""
+Comment2 ""
+Comment3 ""
+Comment4 ""
+$EndDescr
+$Comp
+L power:+3.3V #PWR?
+U 1 1 5EFDBE01
+P 5350 1250
+AR Path="/5EFDBE01" Ref="#PWR?"  Part="1" 
+AR Path="/5EFDA4FE/5EFDBE01" Ref="#PWR020"  Part="1" 
+F 0 "#PWR020" H 5350 1100 50  0001 C CNN
+F 1 "+3.3V" H 5365 1423 50  0000 C CNN
+F 2 "" H 5350 1250 50  0001 C CNN
+F 3 "" H 5350 1250 50  0001 C CNN
+	1    5350 1250
+	1    0    0    -1  
+$EndComp
+$Comp
+L power:+5V #PWR?
+U 1 1 5EFDBE07
+P 5100 1250
+AR Path="/5EFDBE07" Ref="#PWR?"  Part="1" 
+AR Path="/5EFDA4FE/5EFDBE07" Ref="#PWR018"  Part="1" 
+F 0 "#PWR018" H 5100 1100 50  0001 C CNN
+F 1 "+5V" H 5115 1423 50  0000 C CNN
+F 2 "" H 5100 1250 50  0001 C CNN
+F 3 "" H 5100 1250 50  0001 C CNN
+	1    5100 1250
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	5100 1250 5100 1500
+$Comp
+L STM32F4DISCOVERY:STM32F4DISCOVERY JB?
+U 1 1 5EFDBE10
+P 4300 4300
+AR Path="/5EFDBE10" Ref="JB?"  Part="1" 
+AR Path="/5EFDA4FE/5EFDBE10" Ref="JB1"  Part="1" 
+F 0 "JB1" H 4300 7367 50  0000 C CNN
+F 1 "STM32F4DISCOVERY" H 4300 7276 50  0000 C CNN
+F 2 "MODULE_STM32F4DISCOVERY" H 4300 4300 50  0001 L BNN
+F 3 "6" H 4300 4300 50  0001 L BNN
+F 4 "STMicroelectronics" H 4300 4300 50  0001 L BNN "Field4"
+F 5 "Manufacturer Recommendations" H 4300 4300 50  0001 L BNN "Field5"
+	1    4300 4300
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	2750 4800 3500 4800
+Wire Wire Line
+	3500 4700 2750 4700
+Wire Wire Line
+	3300 4900 3500 4900
+Wire Wire Line
+	3300 5000 3500 5000
+Wire Wire Line
+	3300 5100 3500 5100
+Wire Wire Line
+	3300 5200 3500 5200
+Wire Wire Line
+	3300 6000 3500 6000
+Text Notes 1900 4600 0    50   ~ 0
+TODO add header for external i2c devices
+Text GLabel 2750 4700 0    50   Input ~ 0
+I2C_SCL
+Text GLabel 2750 4800 0    50   Input ~ 0
+I2C_SDA
+Text GLabel 3300 4900 0    50   Input ~ 0
+I2S_LRCLK
+Text GLabel 3300 5000 0    50   Input ~ 0
+I2S_BCLK
+Text GLabel 3300 5100 0    50   Input ~ 0
+I2S_RX
+Text GLabel 3300 5200 0    50   Input ~ 0
+I2S_TX
+Text GLabel 3300 6000 0    50   Input ~ 0
+I2S_MCLK
+$Comp
+L power:GND #PWR019
+U 1 1 5EFDE6B2
+P 5100 7200
+F 0 "#PWR019" H 5100 6950 50  0001 C CNN
+F 1 "GND" H 5105 7027 50  0000 C CNN
+F 2 "" H 5100 7200 50  0001 C CNN
+F 3 "" H 5100 7200 50  0001 C CNN
+	1    5100 7200
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	5100 7200 5100 7100
+Text GLabel 3300 6200 0    50   Input ~ 0
+SDIO_D0
+Wire Wire Line
+	3300 6200 3500 6200
+Text GLabel 3300 6300 0    50   Input ~ 0
+SDIO_D1
+Text GLabel 3300 6400 0    50   Input ~ 0
+SDIO_D2
+Text GLabel 3300 6500 0    50   Input ~ 0
+SDIO_D3
+Wire Wire Line
+	3300 6300 3500 6300
+Wire Wire Line
+	3300 6400 3500 6400
+Wire Wire Line
+	3300 6500 3500 6500
+Text GLabel 3300 6600 0    50   Input ~ 0
+SDIO_CK
+Text GLabel 5300 2400 2    50   Input ~ 0
+SDIO_D0
+Wire Wire Line
+	5300 2400 5100 2400
+Wire Wire Line
+	3300 6600 3500 6600
+Text GLabel 3250 2600 0    50   Input ~ 0
+DAC1
+Text GLabel 3250 2700 0    50   Input ~ 0
+DAC2
+Wire Wire Line
+	3250 2600 3500 2600
+Wire Wire Line
+	3500 2700 3250 2700
+Text GLabel 3250 3500 0    50   Input ~ 0
+SPIRAM_NSS
+Wire Wire Line
+	3250 3500 3500 3500
+Text Notes 1900 3400 0    50   ~ 0
+TODO add header for external spi device
+Text GLabel 3250 4000 0    50   Input ~ 0
+SPIRAM_SCK
+Text GLabel 3250 4100 0    50   Input ~ 0
+SPIRAM_MISO
+Text GLabel 3250 4200 0    50   Input ~ 0
+SPIRAM_MOSI-VGA_PIXEL
+Wire Wire Line
+	3250 4000 3500 4000
+Wire Wire Line
+	3500 4100 3250 4100
+Wire Wire Line
+	3250 4200 3500 4200
+Text GLabel 3250 2300 0    50   Input ~ 0
+VGA_VSYNC
+Wire Wire Line
+	3250 2300 3500 2300
+Text GLabel 3250 3000 0    50   Input ~ 0
+VGA_HSYNC
+Wire Wire Line
+	3250 3000 3500 3000
+$EndSCHEMATC

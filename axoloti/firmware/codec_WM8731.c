@@ -15,9 +15,9 @@ static uint8_t i2c_txbuf[2] __attribute__ ((section (".sram2")));
 
 
 bool_t codec_WM8731_hw_reset(void) {
-	if (codec_WM8731_writeReg(WM8731_REG_RESET, 0x00) == RDY_OK) {
-		return true;
-	}
+	msg_t status;
+	status = codec_WM8731_writeReg(WM8731_REG_RESET, 0x00);
+	if (status == RDY_OK) return true;
 	else return false;
 }
 
@@ -28,9 +28,10 @@ void codec_WM8731_hw_init(void) {
   palSetPadMode(GPIOB, 11, PAL_MODE_ALTERNATE(4) | PAL_STM32_OTYPE_OPENDRAIN); //SDA
 
   i2cStart(&WM8731_I2C, &i2cfgWM);
+	chThdSleepMilliseconds(1);
 
 	/*
-		FROM THE WM8731 DATASHEET:
+		STARTUP SEQUENCE FROM THE WM8731 DATASHEET:
 		- Switch on power supplies. By default the WM8731 is in Standby Mode, the DAC is digitally muted and the Audio Interface and Outputs are all OFF.
 		- Set all required bits in the Power Down register (0x06) to ‘0’; EXCEPT the OUTPD bit, this should be set to ‘1’ (Default).
 		- Set required values in all other registers except 0x09 (Active).
@@ -38,7 +39,7 @@ void codec_WM8731_hw_init(void) {
 		- The last write of the sequence should be setting OUTPD to ‘0’ (active) in register 0x06, enabling the DAC signal path, free of any significant power-up noise.
 	*/
 
-	// Reg 06: Power Down Control (Clkout, Osc, OUTPD, Mic powered down) 0111 0010
+	// Reg 06: Power Down Control (Clkout, Osc, OUTPD, Mic bits set) 0111 0010
 	codec_WM8731_writeReg(WM8731_REG_POWERDOWN, 0x72);
 
 	// Reg 00: Left Line In (0dB, mute off) 0001 0111
@@ -47,7 +48,7 @@ void codec_WM8731_hw_init(void) {
 	// Reg 01: Right Line In (0dB, mute off) 0001 0111
 	codec_WM8731_writeReg(WM8731_REG_RLINEIN,0x17);
 
-	// Reg 02: Left Headphone out (0dB) 0111 1001
+	// Reg 02: Left Headphone out (0dB) 0111 1001 //TODO can mute?
 	codec_WM8731_writeReg(WM8731_REG_LHEADOUT,0x79);
 
 	// Reg 03: Right Headphone out (0dB) 0111 1001
@@ -70,8 +71,10 @@ void codec_WM8731_hw_init(void) {
 
 	chThdSleepMilliseconds(5);
 
-	// Reg 06: Power Down Control (Clkout, Osc, Mic powered down) 0110 0010
+	// Reg 06: Power Down Control (Clkout, Osc, Mic bits set) 0110 0010
 	codec_WM8731_writeReg(WM8731_REG_POWERDOWN, 0x62);
+
+	i2cStop(&WM8731_I2C);
 
 }
 
@@ -142,36 +145,32 @@ static void codec_WM8731_dma_init(void) {
 void codec_WM8731_i2s_init_48k(void) {
 
 	palSetPadMode(GPIOB, 12, PAL_MODE_OUTPUT_PUSHPULL);
-	palSetPadMode(GPIOB, 12, PAL_MODE_ALTERNATE(5)); // WS
-
 	palSetPadMode(GPIOB, 13, PAL_MODE_OUTPUT_PUSHPULL);
-	palSetPadMode(GPIOB, 13, PAL_MODE_ALTERNATE(5)); // BCK
-
 	palSetPadMode(GPIOB, 14, PAL_MODE_OUTPUT_PUSHPULL);
-	palSetPadMode(GPIOB, 14, PAL_MODE_ALTERNATE(5)); // ext_SD
-
 	palSetPadMode(GPIOB, 15, PAL_MODE_OUTPUT_PUSHPULL);
-	palSetPadMode(GPIOB, 15, PAL_MODE_ALTERNATE(5)); // SD
+	palSetPadMode(GPIOC,  6, PAL_MODE_OUTPUT_PUSHPULL);
 
-	palSetPadMode(GPIOC, 6, PAL_MODE_OUTPUT_PUSHPULL);
-	palSetPadMode(GPIOC, 6,  PAL_MODE_ALTERNATE(5)); // MCLK
+	palSetPadMode(GPIOB, 12, PAL_MODE_ALTERNATE(5)); // WS
+	palSetPadMode(GPIOB, 13, PAL_MODE_ALTERNATE(5)); // BCK
+	palSetPadMode(GPIOB, 14, PAL_MODE_ALTERNATE(5)); // ext_SD
+	palSetPadMode(GPIOB, 15, PAL_MODE_ALTERNATE(5)); // SD
+	palSetPadMode(GPIOC,  6, PAL_MODE_ALTERNATE(5)); // MCLK
 
 	// SPI2 in I2S Mode, Master
 	WM8731_I2S_ENABLE;
 
-	WM8731_I2S->I2SCFGR = SPI_I2SCFGR_I2SMOD | SPI_I2SCFGR_I2SCFG_1
-			| SPI_I2SCFGR_DATLEN_1; /* MASTER TRANSMIT */
-	WM8731_I2S->I2SPR = SPI_I2SPR_MCKOE | SPI_I2SPR_ODD | 3;
+	WM8731_I2S->I2SCFGR     = SPI_I2SCFGR_I2SMOD | SPI_I2SCFGR_I2SCFG_1 | SPI_I2SCFGR_DATLEN_1; /* MASTER TRANSMIT */
+	WM8731_I2S->I2SPR       = SPI_I2SPR_MCKOE | SPI_I2SPR_ODD | 3;
 
-  WM8731_I2SEXT->I2SCFGR = SPI_I2SCFGR_I2SMOD | SPI_I2SCFGR_I2SCFG_0 | SPI_I2SCFGR_DATLEN_1; /* SLAVE RECEIVE*/
-	WM8731_I2SEXT->I2SPR = SPI_I2SPR_ODD | 3;
+  WM8731_I2SEXT->I2SCFGR  = SPI_I2SCFGR_I2SMOD | SPI_I2SCFGR_I2SCFG_0 | SPI_I2SCFGR_DATLEN_1; /* SLAVE RECEIVE*/
+	WM8731_I2SEXT->I2SPR    = SPI_I2SPR_ODD | 3;
 
 	codec_WM8731_dma_init();
 
-	WM8731_I2S->CR2 = SPI_CR2_TXDMAEN;
-	WM8731_I2SEXT->CR2 = SPI_CR2_RXDMAEN;
+	WM8731_I2S->CR2         = SPI_CR2_TXDMAEN;
+	WM8731_I2SEXT->CR2      = SPI_CR2_RXDMAEN;
 
-	WM8731_I2S->I2SCFGR |= SPI_I2SCFGR_I2SE;
+	WM8731_I2S->I2SCFGR    |= SPI_I2SCFGR_I2SE;
 	WM8731_I2SEXT->I2SCFGR |= SPI_I2SCFGR_I2SE;
 
 }
@@ -202,8 +201,8 @@ bool_t codec_WM8731_writeReg(uint8_t addr, uint16_t data) {
 
 void codec_WM8731_I2SStop(void) {
 
-  WM8731_I2S->I2SCFGR = 0;
+  WM8731_I2S->I2SCFGR    = 0;
   WM8731_I2SEXT->I2SCFGR = 0;
-  WM8731_I2S->CR2 = 0;
-  WM8731_I2SEXT->CR2 = 0;
+  WM8731_I2S->CR2        = 0;
+  WM8731_I2SEXT->CR2     = 0;
 }
