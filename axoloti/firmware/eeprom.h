@@ -35,6 +35,7 @@ void eeprom_init(void);
 
 /* Patch API */
 void *eeprom_setup(enum EepromTypes type, I2CDriver *bus, uint8_t pinaddr);
+
 void eeprom_teardown(void *handle);
 
 uint8_t *eeprom_get_pagebuf(void *handle, int *buflen);
