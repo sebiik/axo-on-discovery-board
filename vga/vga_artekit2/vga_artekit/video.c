@@ -3,9 +3,9 @@
  * Copyright (C) 2012 Artekit Italy
  * http://www.artekit.eu
  * Written by Ruben H. Meleca
- 
+
 ### video.c
- 
+
 #   This program is free software; you can redistribute it and/or modify
 #   it under the terms of the GNU General Public License as published by
 #   the Free Software Foundation; either version 2 of the License, or
@@ -55,7 +55,7 @@
  *  as GPIO_Pin_12 etc.
  */
 #define GREEN			LED4_PIN
-#define ORANGE			LED3_PIN
+#define ORANGE		LED3_PIN
 #define RED				LED5_PIN
 #define BLUE			LED6_PIN
 #define ALL_LEDS		(GREEN | ORANGE | RED | BLUE)		// all leds
@@ -95,7 +95,7 @@ u8	fb[VID_VSIZE][VTOTAL]  __attribute__((aligned(32)));	/* Frame buffer */
 
 static volatile u16 vline = 0;				/* The current line being drawn */
 static volatile u32 vflag = 0;				/* When 1, the SPI DMA request can draw on the screen */
-static volatile u32 vdraw = 0;				/* Used to increment vline every 3 drawn lines */ 
+static volatile u32 vdraw = 0;				/* Used to increment vline every 3 drawn lines */
 
 void TIMER_Configuration(void)
 {
@@ -107,7 +107,7 @@ void TIMER_Configuration(void)
 	u16							Channel1Pulse = 0;
 	u16							Channel2Pulse = 0;
 	u16							Channel3Pulse = 0;
-	
+
 	GPIO_InitStructure.GPIO_Pin = GPIO_Pin_1 | GPIO_Pin_8;
 	GPIO_InitStructure.GPIO_Mode = GPIO_Mode_AF;
 	GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
@@ -126,38 +126,38 @@ void TIMER_Configuration(void)
 		SVGA 800x600 @ 56 Hz
 		Vertical refresh	35.15625 kHz
 		Pixel freq.			36.0 MHz
-		
+
 		1 system tick @ 72Mhz = 0,0138 us
 	*/
-	
+
 	/*
 		Horizontal timing
 		-----------------
-		
+
 		Timer 1 period = 35156 Hz
-		
+
 		Timer 1 channel 1 generates a pulse for HSYNC each 28.4 us.
 		28.4 us	= Visible area + Front porch + Sync pulse + Back porch.
 		HSYNC is 2 us long, so the math to do is:
 		2us / 0,0138us = 144 system ticks.
-		
+
 		Timer 1 channel 2 generates a pulse equal to HSYNC + back porch.
 		This interrupt will fire the DMA request to draw on the screen if vflag == 1.
 		Since firing the DMA takes more or less 800ns, we'll add some extra time.
 		The math for HSYNC + back porch is:
 		(2us + 3,55us - dma) / 0,0138us = +-350 system ticks
-	
+
 		Horizontal timing info
 		----------------------
 
 						Dots	us
-		--------------------------------------------		
+		--------------------------------------------
 		Visible area	800		22.222222222222
 		Front porch		24		0.66666666666667
 		Sync pulse		72		2
 		Back porch		128		3.5555555555556
 		Whole line		1024	28.444444444444
-	
+
 ----------------------
 Modifications for use with STM32F4 Discovery board.
 
@@ -178,7 +178,7 @@ HSYNC + back porch period is 2 us + 3.55 us (freq = 180.0 kHz) = SystemCoreClock
 	TimerPeriod = SystemCoreClock / 35156;			// Ticks per whole line
 	Channel1Pulse = SystemCoreClock / 500000;		// HSYNC
 	Channel2Pulse = SystemCoreClock / 180000; 		// HSYNC + BACK PORCH
-	
+
 	TIM_TimeBaseInit(TIM1, &TIM_TimeBaseStructure);		// always init the time base structure first!
 
 	TIM_TimeBaseStructure.TIM_Prescaler = 0;
@@ -208,18 +208,18 @@ HSYNC + back porch period is 2 us + 3.55 us (freq = 180.0 kHz) = SystemCoreClock
 	TIM_OC2PreloadConfig(TIM1, TIM_OCPreload_Enable);	// added per stm32 tutorial
 
 	TIM_ARRPreloadConfig(TIM1, ENABLE);					// added per STM32 forum
-  
+
 	/* TIM1 counter enable and output enable */
 	TIM_CtrlPWMOutputs(TIM1, ENABLE);
 
 	/* Select TIM1 as Master */
 	TIM_SelectMasterSlaveMode(TIM1, TIM_MasterSlaveMode_Enable);
 	TIM_SelectOutputTrigger(TIM1, TIM_TRGOSource_Update);
-	
+
 	/*
 		Vertical timing
 		---------------
-		
+
 		Polarity of vertical sync pulse is positive.
 
 						Lines
@@ -229,14 +229,14 @@ HSYNC + back porch period is 2 us + 3.55 us (freq = 180.0 kHz) = SystemCoreClock
 		Sync pulse		2
 		Back porch		22
 		Whole frame		625
-		
+
 */
 
 	/* VSYNC (TIM2_CH2) and VSYNC_BACKPORCH (TIM2_CH3) */
 	/* Channel 2 and 3 Configuration in PWM mode */
 	TIM_SelectSlaveMode(TIM2, TIM_SlaveMode_Gated);
 	TIM_SelectInputTrigger(TIM2, TIM_TS_ITR0);
-	
+
 	TimerPeriod = 625;		/* Vertical lines */
 	Channel2Pulse = 2;		/* Sync pulse */
 	Channel3Pulse = 24;		/* Sync pulse + Back porch */
@@ -261,7 +261,7 @@ HSYNC + back porch period is 2 us + 3.55 us (freq = 180.0 kHz) = SystemCoreClock
 	TIM_OCInitStructure.TIM_OCIdleState = TIM_OCIdleState_Reset;
 	TIM_OCInitStructure.TIM_OCNIdleState = TIM_OCIdleState_Reset;
 	TIM_OC2Init(TIM2, &TIM_OCInitStructure);
-	
+
 	TIM_OCInitStructure.TIM_OCMode = TIM_OCMode_Inactive;
 	TIM_OCInitStructure.TIM_Pulse = Channel3Pulse;
 	TIM_OC3Init(TIM2, &TIM_OCInitStructure);
@@ -306,7 +306,7 @@ void SPI_Configuration(void)
 	SPI_InitTypeDef			SPI_InitStructure;
 	DMA_InitTypeDef			DMA_InitStructure;
 	GPIO_InitTypeDef		GPIO_InitStructure;
-	
+
 	GPIO_InitStructure.GPIO_Pin =  GPIO_Pin_5;
 	GPIO_InitStructure.GPIO_Mode = GPIO_Mode_AF;
 	GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
@@ -349,7 +349,7 @@ void SPI_Configuration(void)
 	SPI_InitStructure.SPI_FirstBit = SPI_FirstBit_MSB;
 	SPI_InitStructure.SPI_CRCPolynomial = 7;
 	SPI_Init(SPI1, &SPI_InitStructure);
-	
+
 	SPI_CalculateCRC(SPI1, DISABLE);
 
 	nvic.NVIC_IRQChannel = DMA_STREAM_IRQ;
@@ -357,11 +357,11 @@ void SPI_Configuration(void)
 	nvic.NVIC_IRQChannelSubPriority = 1;
 	nvic.NVIC_IRQChannelCmd = ENABLE;
 	NVIC_Init(&nvic);
-	
+
 	DMA_STREAM->CR &= ~DMA_SxCR_EN;			// clear the EN bit to disable the stream
 	DMA_STREAM->NDTR = VTOTAL;				// set number of bytes to transfer
 	DMA_STREAM->M0AR = (u32) &fb[0][0];		// set start of frame buffer
-	
+
 	SPI_I2S_DMACmd(SPI1, SPI_I2S_DMAReq_Tx, ENABLE);	// allow Tx interrupt to generate DMA requests
 	SPI_Cmd(SPI1, ENABLE);
 
@@ -379,7 +379,7 @@ void SPI_Configuration(void)
 
 //*****************************************************************************
 //	This irq is generated at the end of the horizontal back porch.
-//	Test if inside a valid vertical start frame (vflag variable), 
+//	Test if inside a valid vertical start frame (vflag variable),
 //	and start the DMA to output a single frame buffer line through the SPI device.
 //*****************************************************************************
 void TIM1_CC_IRQHandler(void)
@@ -420,7 +420,7 @@ void TIM2_IRQHandler(void)
  *  Upon exit, the stream is set up but disabled.
  */
 void  DMA_STREAM_IRQHANDLER(void)
-{	
+{
 //	VIDEO_DMA->LIFCR = 0x003d0000;			// hard-coded clear of all DMA2 interrupt flags
 	VIDEO_DMA->LIFCR = DMA_LIFCR_CTCIF3;	// clear the transfer complete interrupt flag
 	DMA_STREAM->CR &= ~DMA_SxCR_EN;			// clear the EN bit to disable the stream
@@ -429,13 +429,13 @@ void  DMA_STREAM_IRQHANDLER(void)
 //	LED_ON(ORANGE);							// debug
 
 	vdraw++;
-	
+
 	if (vdraw == 1)			// was 3
 	{
 		vdraw = 0;
 
 		vline++;
-		
+
 		if (vline == VID_VSIZE)
 		{
 			vdraw = vline = vflag = 0;
