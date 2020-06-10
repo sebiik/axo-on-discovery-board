@@ -3,7 +3,7 @@ EELAYER 30 0
 EELAYER END
 $Descr A4 11693 8268
 encoding utf-8
-Sheet 1 5
+Sheet 1 6
 Title ""
 Date ""
 Rev ""
@@ -247,4 +247,14 @@ Wire Wire Line
 Connection ~ 4050 4550
 Wire Wire Line
 	4050 4550 4750 4550
+$Sheet
+S 7750 3700 950  950 
+U 5EE2DB57
+F0 "MIDI" 50
+F1 "midi.sch" 50
+$EndSheet
+Text GLabel 2900 1900 0    50   Input ~ 0
+MIDI_RX
+Text GLabel 2900 2050 0    50   Input ~ 0
+MIDI_TX
 $EndSCHEMATC

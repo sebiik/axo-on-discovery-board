@@ -3,7 +3,7 @@ EELAYER 30 0
 EELAYER END
 $Descr A4 11693 8268
 encoding utf-8
-Sheet 2 5
+Sheet 2 6
 Title ""
 Date ""
 Rev ""
@@ -1218,4 +1218,34 @@ Wire Wire Line
 	8050 2900 8900 2900
 Wire Wire Line
 	7950 2800 8900 2800
+$Comp
+L axof4_base_board-rescue:GND-power #PWR?
+U 1 1 5EF2E92F
+P 1550 1750
+AR Path="/5EF2E92F" Ref="#PWR?"  Part="1" 
+AR Path="/5EFC127A/5EF2E92F" Ref="#PWR0101"  Part="1" 
+F 0 "#PWR0101" H 1550 1500 50  0001 C CNN
+F 1 "GND" H 1555 1577 50  0000 C CNN
+F 2 "" H 1550 1750 50  0001 C CNN
+F 3 "" H 1550 1750 50  0001 C CNN
+	1    1550 1750
+	1    0    0    -1  
+$EndComp
+$Comp
+L axof4_base_board-rescue:GNDA-power #PWR?
+U 1 1 5EF31917
+P 1900 1750
+AR Path="/5EF31917" Ref="#PWR?"  Part="1" 
+AR Path="/5EFC127A/5EF31917" Ref="#PWR0102"  Part="1" 
+F 0 "#PWR0102" H 1900 1500 50  0001 C CNN
+F 1 "GNDA" H 1905 1577 50  0000 C CNN
+F 2 "" H 1900 1750 50  0001 C CNN
+F 3 "" H 1900 1750 50  0001 C CNN
+	1    1900 1750
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	1550 1750 1900 1750
+Text Notes 1100 1600 0    50   ~ 0
+Analog and digital GND are the same, \njust keeping different symbols for future upgrades
 $EndSCHEMATC
