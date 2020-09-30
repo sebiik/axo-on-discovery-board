@@ -3,7 +3,7 @@ EELAYER 30 0
 EELAYER END
 $Descr A4 11693 8268
 encoding utf-8
-Sheet 5 6
+Sheet 5 7
 Title ""
 Date ""
 Rev ""
@@ -38,7 +38,7 @@ F 3 "" H 6950 2450 50  0001 C CNN
 	1    0    0    -1  
 $EndComp
 $Comp
-L dk_PMIC-Voltage-Regulators-Linear:LM1117MPX-3_3_NOPB U4
+L axof4_base_board-rescue:LM1117MPX-3_3_NOPB-dk_PMIC-Voltage-Regulators-Linear U4
 U 1 1 5ED8D948
 P 8650 2650
 F 0 "U4" H 8600 2937 60  0000 C CNN
@@ -58,7 +58,7 @@ F 12 "Active" H 8850 3850 60  0001 L CNN "Status"
 	1    0    0    -1  
 $EndComp
 $Comp
-L dk_PMIC-Voltage-Regulators-Linear:LM1117MPX-3_3_NOPB U5
+L axof4_base_board-rescue:LM1117MPX-3_3_NOPB-dk_PMIC-Voltage-Regulators-Linear U5
 U 1 1 5ED8E22F
 P 8650 4000
 F 0 "U5" H 8600 4287 60  0000 C CNN
@@ -96,7 +96,7 @@ U 1 1 5ED9C001
 P 7200 2800
 F 0 "C27" H 7291 2846 50  0000 L CNN
 F 1 "1u" H 7291 2755 50  0000 L CNN
-F 2 "" H 7200 2800 50  0001 C CNN
+F 2 "Capacitor_SMD:CP_Elec_4x5.4" H 7200 2800 50  0001 C CNN
 F 3 "" H 7200 2800 50  0001 C CNN
 	1    7200 2800
 	1    0    0    -1  
@@ -113,7 +113,7 @@ U 1 1 5EDA1E36
 P 7650 2650
 F 0 "R25" V 7550 2650 50  0000 C CNN
 F 1 "4.7" V 7650 2650 50  0000 C CNN
-F 2 "" V 7580 2650 50  0001 C CNN
+F 2 "Resistor_SMD:R_1206_3216Metric_Pad1.42x1.75mm_HandSolder" V 7580 2650 50  0001 C CNN
 F 3 "" H 7650 2650 50  0001 C CNN
 	1    7650 2650
 	0    1    1    0   
@@ -253,9 +253,11 @@ F 3 "" H 9150 2750 50  0001 C CNN
 	1    0    0    -1  
 $EndComp
 $Comp
-L dk_Barrel-Power-Connectors:PJ-102A J2
+L axof4_base_board-rescue:PJ-102A-dk_Barrel-Power-Connectors J2
 U 1 1 5EE0EA4E
 P 1550 3250
+AR Path="/5EE0EA4E" Ref="J2"  Part="1" 
+AR Path="/5ED86ED4/5EE0EA4E" Ref="J2"  Part="1" 
 F 0 "J2" H 1483 3475 50  0000 C CNN
 F 1 "PJ-102A" H 1483 3384 50  0000 C CNN
 F 2 "digikey-footprints:Barrel_Jack_5.5mmODx2.1mmID_PJ-102A" H 1750 3450 60  0001 L CNN
@@ -295,7 +297,7 @@ U 1 1 5EE12041
 P 1850 2950
 F 0 "J3" V 1814 2762 50  0000 R CNN
 F 1 "power_sw" V 2000 3050 50  0000 R CNN
-F 2 "" H 1850 2950 50  0001 C CNN
+F 2 "Connector_PinHeader_2.54mm:PinHeader_1x02_P2.54mm_Vertical" H 1850 2950 50  0001 C CNN
 F 3 "" H 1850 2950 50  0001 C CNN
 	1    1850 2950
 	0    -1   -1   0   
@@ -337,7 +339,7 @@ U 1 1 5EE1A578
 P 3150 3900
 F 0 "U3" H 3200 4350 50  0000 C CNN
 F 1 "LT1054" H 3350 3400 50  0000 C CNN
-F 2 "" H 3250 3800 50  0001 C CNN
+F 2 "Package_DIP:DIP-8_W7.62mm" H 3250 3800 50  0001 C CNN
 F 3 "https://www.analog.com/media/en/technical-documentation/data-sheets/1054lfh.pdf" H 3250 3800 50  0001 C CNN
 	1    3150 3900
 	1    0    0    -1  
@@ -348,7 +350,7 @@ U 1 1 5EE1E4DD
 P 4550 3900
 F 0 "U7" H 4550 3751 50  0000 C CNN
 F 1 "L7905" H 4550 3660 50  0000 C CNN
-F 2 "" H 4550 3700 50  0001 C CIN
+F 2 "Package_TO_SOT_THT:TO-220-3_Vertical" H 4550 3700 50  0001 C CIN
 F 3 "http://www.st.com/content/ccc/resource/technical/document/datasheet/c9/16/86/41/c7/2b/45/f2/CD00000450.pdf/files/CD00000450.pdf/jcr:content/translations/en.CD00000450.pdf" H 4550 3900 50  0001 C CNN
 	1    4550 3900
 	1    0    0    -1  
@@ -359,7 +361,7 @@ U 1 1 5EE1EE78
 P 4550 3000
 F 0 "U6" H 4550 3242 50  0000 C CNN
 F 1 "L7805" H 4550 3151 50  0000 C CNN
-F 2 "" H 4575 2850 50  0001 L CIN
+F 2 "Package_TO_SOT_THT:TO-220-3_Vertical" H 4575 2850 50  0001 L CIN
 F 3 "http://www.st.com/content/ccc/resource/technical/document/datasheet/41/4f/b3/b0/12/d4/47/88/CD00000444.pdf/files/CD00000444.pdf/jcr:content/translations/en.CD00000444.pdf" H 4550 2950 50  0001 C CNN
 	1    4550 3000
 	1    0    0    -1  
@@ -512,7 +514,7 @@ Wire Wire Line
 Wire Wire Line
 	1950 3600 2600 3600
 Wire Wire Line
-	2650 3250 3300 3250
+	2650 3250 2900 3250
 NoConn ~ 2750 3700
 Wire Wire Line
 	2600 3600 2600 4500
@@ -629,125 +631,33 @@ Connection ~ 3600 3800
 Wire Wire Line
 	3600 3800 3700 3800
 $Comp
-L power:PWR_FLAG #FLG0101
-U 1 1 5EF4839F
-P 800 1000
-F 0 "#FLG0101" H 800 1075 50  0001 C CNN
-F 1 "PWR_FLAG" H 800 1173 50  0000 C CNN
-F 2 "" H 800 1000 50  0001 C CNN
-F 3 "~" H 800 1000 50  0001 C CNN
-	1    800  1000
-	-1   0    0    1   
-$EndComp
-$Comp
-L axof4_base_board-rescue:+5V-power #PWR0103
-U 1 1 5EF4B58B
-P 800 900
-F 0 "#PWR0103" H 800 750 50  0001 C CNN
-F 1 "+5V-power" H 815 1073 50  0000 C CNN
-F 2 "" H 800 900 50  0001 C CNN
-F 3 "" H 800 900 50  0001 C CNN
-	1    800  900 
-	1    0    0    -1  
-$EndComp
-Wire Wire Line
-	800  1000 800  900 
-$Comp
-L power:-5V #PWR0104
-U 1 1 5EF5955F
-P 1250 900
-F 0 "#PWR0104" H 1250 1000 50  0001 C CNN
-F 1 "-5V" H 1265 1073 50  0000 C CNN
-F 2 "" H 1250 900 50  0001 C CNN
-F 3 "" H 1250 900 50  0001 C CNN
-	1    1250 900 
-	1    0    0    -1  
-$EndComp
-$Comp
-L axof4_base_board-rescue:+3.3V-power #PWR0105
-U 1 1 5EF5984D
-P 1750 900
-F 0 "#PWR0105" H 1750 750 50  0001 C CNN
-F 1 "+3.3V-power" H 1765 1073 50  0000 C CNN
-F 2 "" H 1750 900 50  0001 C CNN
-F 3 "" H 1750 900 50  0001 C CNN
-	1    1750 900 
-	1    0    0    -1  
-$EndComp
-$Comp
-L axof4_base_board-rescue:+3.3VA-power #PWR0106
-U 1 1 5EF59C31
-P 2400 900
-F 0 "#PWR0106" H 2400 750 50  0001 C CNN
-F 1 "+3.3VA-power" H 2415 1073 50  0000 C CNN
-F 2 "" H 2400 900 50  0001 C CNN
-F 3 "" H 2400 900 50  0001 C CNN
-	1    2400 900 
-	1    0    0    -1  
-$EndComp
-$Comp
-L power:PWR_FLAG #FLG0102
-U 1 1 5EF59FD9
-P 1250 1000
-F 0 "#FLG0102" H 1250 1075 50  0001 C CNN
-F 1 "PWR_FLAG" H 1250 1173 50  0000 C CNN
-F 2 "" H 1250 1000 50  0001 C CNN
-F 3 "~" H 1250 1000 50  0001 C CNN
-	1    1250 1000
-	-1   0    0    1   
-$EndComp
-$Comp
-L power:PWR_FLAG #FLG0103
-U 1 1 5EF5A18D
-P 1750 1000
-F 0 "#FLG0103" H 1750 1075 50  0001 C CNN
-F 1 "PWR_FLAG" H 1750 1173 50  0000 C CNN
-F 2 "" H 1750 1000 50  0001 C CNN
-F 3 "~" H 1750 1000 50  0001 C CNN
-	1    1750 1000
-	-1   0    0    1   
-$EndComp
-$Comp
-L power:PWR_FLAG #FLG0104
-U 1 1 5EF5A427
-P 2400 1000
-F 0 "#FLG0104" H 2400 1075 50  0001 C CNN
-F 1 "PWR_FLAG" H 2400 1173 50  0000 C CNN
-F 2 "" H 2400 1000 50  0001 C CNN
-F 3 "~" H 2400 1000 50  0001 C CNN
-	1    2400 1000
-	-1   0    0    1   
-$EndComp
-Wire Wire Line
-	2400 1000 2400 900 
-Wire Wire Line
-	1750 900  1750 1000
-Wire Wire Line
-	1250 900  1250 1000
-$Comp
-L axof4_base_board-rescue:GND-power #PWR?
-U 1 1 5EE201A1
-P 3000 850
-AR Path="/5ECDA234/5EE201A1" Ref="#PWR?"  Part="1" 
-AR Path="/5ED86ED4/5EE201A1" Ref="#PWR0107"  Part="1" 
-F 0 "#PWR0107" H 3000 600 50  0001 C CNN
-F 1 "GND" H 3005 677 50  0000 C CNN
-F 2 "" H 3000 850 50  0001 C CNN
-F 3 "" H 3000 850 50  0001 C CNN
-	1    3000 850 
-	-1   0    0    1   
-$EndComp
-$Comp
 L power:PWR_FLAG #FLG0105
 U 1 1 5EE20DCA
-P 3000 1000
-F 0 "#FLG0105" H 3000 1075 50  0001 C CNN
-F 1 "PWR_FLAG" H 3000 1173 50  0000 C CNN
-F 2 "" H 3000 1000 50  0001 C CNN
-F 3 "~" H 3000 1000 50  0001 C CNN
-	1    3000 1000
+P 1950 3700
+F 0 "#FLG0105" H 1950 3775 50  0001 C CNN
+F 1 "PWR_FLAG" H 1950 3873 50  0000 C CNN
+F 2 "" H 1950 3700 50  0001 C CNN
+F 3 "~" H 1950 3700 50  0001 C CNN
+	1    1950 3700
 	-1   0    0    1   
 $EndComp
+$Comp
+L power:PWR_FLAG #FLG0101
+U 1 1 5EEECED4
+P 2900 3050
+F 0 "#FLG0101" H 2900 3125 50  0001 C CNN
+F 1 "PWR_FLAG" H 2900 3223 50  0000 C CNN
+F 2 "" H 2900 3050 50  0001 C CNN
+F 3 "~" H 2900 3050 50  0001 C CNN
+	1    2900 3050
+	1    0    0    -1  
+$EndComp
 Wire Wire Line
-	3000 850  3000 1000
+	2900 3050 2900 3250
+Connection ~ 2900 3250
+Wire Wire Line
+	2900 3250 3300 3250
+Connection ~ 1950 3600
+Wire Wire Line
+	1950 3600 1950 3700
 $EndSCHEMATC

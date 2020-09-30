@@ -3,7 +3,7 @@ EELAYER 30 0
 EELAYER END
 $Descr A4 11693 8268
 encoding utf-8
-Sheet 1 6
+Sheet 1 7
 Title ""
 Date ""
 Rev ""
@@ -257,4 +257,10 @@ Text GLabel 2900 1900 0    50   Input ~ 0
 MIDI_RX
 Text GLabel 2900 2050 0    50   Input ~ 0
 MIDI_TX
+$Sheet
+S 8900 3700 950  950 
+U 5F736ED6
+F0 "USB" 50
+F1 "usb.sch" 50
+$EndSheet
 $EndSCHEMATC
