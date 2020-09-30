@@ -24,8 +24,11 @@
 #define WM8731_REG_RESET      0x0F
 
 extern void codec_WM8731_i2s_init_48k(void);
+
 extern bool_t codec_WM8731_hw_reset(void);
+
 extern void codec_WM8731_hw_init(void);
+
 extern bool_t codec_WM8731_writeReg(uint8_t addr, uint16_t data);
 
 #endif /* CODEC_H_ */

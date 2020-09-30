@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright (C) 2016 Ricard Wanderlof
  *
  * This file is part of Axoloti.
@@ -16,7 +16,7 @@
  *
  * You should have received a copy of the GNU General Public License along with
  * Axoloti. If not, see <http://www.gnu.org/licenses/>.
- */
+*/
 
 /*
   Copyright (c) 2013 Timon Wong
