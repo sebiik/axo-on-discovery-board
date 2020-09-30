@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright (C) 2013, 2014 Johannes Taelman
  *
  * This file is part of Axoloti.
