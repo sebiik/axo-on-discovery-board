@@ -1153,9 +1153,9 @@ LLINEIN
 Text GLabel 8600 3700 2    50   Input ~ 0
 RLINEIN
 Text GLabel 8900 2800 2    50   Input ~ 0
-I2C_SCL
+WM8731_SCL
 Text GLabel 8900 2900 2    50   Input ~ 0
-I2C_SDA
+WM8731_SDA
 $Comp
 L axof4_base_board-rescue:GNDA-power #PWR?
 U 1 1 5EFD07C1
@@ -1193,10 +1193,10 @@ F 3 "~" H 4100 2650 50  0001 C CNN
 	1    4100 2650
 	-1   0    0    1   
 $EndComp
-Text GLabel 8900 3000 2    50   Input ~ 0
+Text GLabel 8450 3000 2    50   Input ~ 0
 I2S_MCLK
 Wire Wire Line
-	7000 3000 8900 3000
+	7000 3000 8450 3000
 Wire Wire Line
 	4300 2550 4500 2550
 Wire Wire Line
