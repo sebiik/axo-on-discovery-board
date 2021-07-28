@@ -38,7 +38,7 @@ AR Path="/5EE2DB57/5ECE0CFC" Ref="C39"  Part="1"
 AR Path="/5F736ED6/5ECE0CFC" Ref="C?"  Part="1" 
 F 0 "C39" H 6000 3000 50  0000 R CNN
 F 1 "100n" H 6050 3100 50  0000 R CNN
-F 2 "Capacitor_SMD:C_1206_3216Metric_Pad1.42x1.75mm_HandSolder" H 5850 3050 50  0001 C CNN
+F 2 "Capacitor_SMD:C_0603_1608Metric" H 5850 3050 50  0001 C CNN
 F 3 "~" H 5850 3050 50  0001 C CNN
 	1    5850 3050
 	0    -1   -1   0   
@@ -51,7 +51,7 @@ AR Path="/5EE2DB57/5EE31190" Ref="D2"  Part="1"
 AR Path="/5F736ED6/5EE31190" Ref="D?"  Part="1" 
 F 0 "D2" V 4904 3780 50  0000 L CNN
 F 1 "1N4148" V 4995 3780 50  0000 L CNN
-F 2 "Diode_THT:D_DO-35_SOD27_P7.62mm_Horizontal" H 4950 3525 50  0001 C CNN
+F 2 "Diode_SMD:D_SOD-123" H 4950 3525 50  0001 C CNN
 F 3 "https://assets.nexperia.com/documents/data-sheet/1N4148_1N4448.pdf" H 4950 3700 50  0001 C CNN
 	1    4950 3700
 	0    1    1    0   
@@ -74,7 +74,7 @@ AR Path="/5EE2DB57/5EE33166" Ref="R26"  Part="1"
 AR Path="/5F736ED6/5EE33166" Ref="R?"  Part="1" 
 F 0 "R26" V 4343 3500 50  0000 C CNN
 F 1 "220" V 4434 3500 50  0000 C CNN
-F 2 "Resistor_SMD:R_1206_3216Metric_Pad1.42x1.75mm_HandSolder" V 4480 3500 50  0001 C CNN
+F 2 "Resistor_SMD:R_0603_1608Metric" V 4480 3500 50  0001 C CNN
 F 3 "~" H 4550 3500 50  0001 C CNN
 	1    4550 3500
 	0    1    1    0   
@@ -130,7 +130,7 @@ AR Path="/5EE2DB57/5EE3B250" Ref="R27"  Part="1"
 AR Path="/5F736ED6/5EE3B250" Ref="R?"  Part="1" 
 F 0 "R27" H 6280 3554 50  0000 R CNN
 F 1 "470" H 6280 3645 50  0000 R CNN
-F 2 "Resistor_SMD:R_1206_3216Metric_Pad1.42x1.75mm_HandSolder" V 6280 3600 50  0001 C CNN
+F 2 "Resistor_SMD:R_0603_1608Metric" V 6280 3600 50  0001 C CNN
 F 3 "~" H 6350 3600 50  0001 C CNN
 	1    6350 3600
 	-1   0    0    1   
@@ -186,7 +186,7 @@ AR Path="/5EE2DB57/5EE45075" Ref="R29"  Part="1"
 AR Path="/5F736ED6/5EE45075" Ref="R?"  Part="1" 
 F 0 "R29" H 7730 3554 50  0000 R CNN
 F 1 "47" H 7730 3645 50  0000 R CNN
-F 2 "Resistor_SMD:R_1206_3216Metric_Pad1.42x1.75mm_HandSolder" V 7730 3600 50  0001 C CNN
+F 2 "Resistor_SMD:R_0603_1608Metric" V 7730 3600 50  0001 C CNN
 F 3 "~" H 7800 3600 50  0001 C CNN
 	1    7800 3600
 	-1   0    0    1   
@@ -216,7 +216,7 @@ AR Path="/5EE2DB57/5EE499CC" Ref="R28"  Part="1"
 AR Path="/5F736ED6/5EE499CC" Ref="R?"  Part="1" 
 F 0 "R28" V 7607 4000 50  0000 C CNN
 F 1 "47" V 7516 4000 50  0000 C CNN
-F 2 "Resistor_SMD:R_1206_3216Metric_Pad1.42x1.75mm_HandSolder" V 7330 4000 50  0001 C CNN
+F 2 "Resistor_SMD:R_0603_1608Metric" V 7330 4000 50  0001 C CNN
 F 3 "~" H 7400 4000 50  0001 C CNN
 	1    7400 4000
 	0    -1   -1   0   
@@ -260,19 +260,6 @@ Text Notes 8050 4100 0    50   ~ 0
 pin5 of DIN
 Text Notes 8050 3750 0    50   ~ 0
 pin4 of DIN
-$Comp
-L Isolator:6N137 U8
-U 1 1 5EE5AB46
-P 5700 3700
-AR Path="/5EE2DB57/5EE5AB46" Ref="U8"  Part="1" 
-AR Path="/5F736ED6/5EE5AB46" Ref="U?"  Part="1" 
-F 0 "U8" H 5700 4167 50  0000 C CNN
-F 1 "6N137" H 5700 4076 50  0000 C CNN
-F 2 "Package_DIP:DIP-8_W7.62mm" H 5700 3200 50  0001 C CNN
-F 3 "https://docs.broadcom.com/docs/AV02-0940EN" H 4850 4250 50  0001 C CNN
-	1    5700 3700
-	1    0    0    -1  
-$EndComp
 Wire Wire Line
 	6000 3800 6000 3700
 Wire Wire Line
@@ -296,4 +283,17 @@ Wire Wire Line
 	7800 3300 7800 3450
 Wire Wire Line
 	6350 3350 6350 3450
+$Comp
+L Isolator:6N137 U8
+U 1 1 5EE5AB46
+P 5700 3700
+AR Path="/5EE2DB57/5EE5AB46" Ref="U8"  Part="1" 
+AR Path="/5F736ED6/5EE5AB46" Ref="U?"  Part="1" 
+F 0 "U8" H 5700 4167 50  0000 C CNN
+F 1 "6N137" H 5700 4076 50  0000 C CNN
+F 2 "Package_DIP:DIP-8_W7.62mm" H 5700 3200 50  0001 C CNN
+F 3 "https://docs.broadcom.com/docs/AV02-0940EN" H 4850 4250 50  0001 C CNN
+	1    5700 3700
+	1    0    0    -1  
+$EndComp
 $EndSCHEMATC
