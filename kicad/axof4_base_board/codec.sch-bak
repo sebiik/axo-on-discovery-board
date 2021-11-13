@@ -1125,11 +1125,6 @@ $EndComp
 Wire Wire Line
 	7000 2650 7000 2600
 Connection ~ 7000 2600
-Wire Wire Line
-	7000 3100 7000 3000
-Connection ~ 7000 3000
-Wire Wire Line
-	7000 3000 7000 2950
 Text GLabel 4150 3000 0    50   Input ~ 0
 I2S_BCLK
 Text GLabel 4150 3100 0    50   Input ~ 0
@@ -1196,8 +1191,6 @@ $EndComp
 Text GLabel 8450 3000 2    50   Input ~ 0
 I2S_MCLK
 Wire Wire Line
-	7000 3000 8450 3000
-Wire Wire Line
 	4300 2550 4500 2550
 Wire Wire Line
 	4500 2550 4500 2900
@@ -1248,4 +1241,24 @@ Wire Wire Line
 	1550 1750 1900 1750
 Text Notes 1100 1600 0    50   ~ 0
 Analog and digital GND are the same, \njust keeping different symbols for future upgrades
+Wire Wire Line
+	7000 2950 7000 3100
+$Comp
+L axof4_base_board-rescue:R-Device R?
+U 1 1 61619D0F
+P 7150 3100
+AR Path="/61619D0F" Ref="R?"  Part="1" 
+AR Path="/5EFC127A/61619D0F" Ref="R37"  Part="1" 
+F 0 "R37" V 7050 3250 50  0000 C CNN
+F 1 "0" V 7150 3100 50  0000 C CNN
+F 2 "Resistor_SMD:R_0603_1608Metric" V 7080 3100 50  0001 C CNN
+F 3 "~" H 7150 3100 50  0001 C CNN
+	1    7150 3100
+	0    1    1    0   
+$EndComp
+Connection ~ 7000 3100
+Wire Wire Line
+	7300 3100 7300 3000
+Wire Wire Line
+	7300 3000 8450 3000
 $EndSCHEMATC
