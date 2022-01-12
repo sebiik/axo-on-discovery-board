@@ -25,3 +25,5 @@ Axoloti on STM32F4 discovery board using a WM8731 codec for audio in/out
 # Progress:
 Schematic [✓]
 PCB layout [75%]
+
+Please note that the USB programming port is on the STM32F4 Discovery board, in other words it is on the back of the module this not accessible when theodile is mounted. This is okay for my personal isecase as I don't reflash the unit often. 
