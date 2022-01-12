@@ -26,4 +26,4 @@ PCB layout [75%]
 
 
 
-Please note that the USB programming port is on the STM32F4 Discovery board, in other words it is on the back of the module and only accessible when the modile is removed from the case. This is okay for my personal isecase as I don't reflash the unit often. 
+Please note that the USB programming port is on the STM32F4 Discovery board, in other words it is on the back of the module and only accessible when the module is removed from the case. This is okay for my personal usecase as I don't reflash the unit often. 
