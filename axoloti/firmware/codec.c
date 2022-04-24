@@ -42,6 +42,8 @@ void codec_init(void) {
 
 #elif (BOARD_STM32F4DISCOVERY_WM8731)
   codec_WM8731_i2s_init_48k();
+  codec_WM8731_hw_reset();
+  chThdSleepMilliseconds(1);
   codec_WM8731_hw_init();
 
 #else

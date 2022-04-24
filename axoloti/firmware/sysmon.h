@@ -20,10 +20,11 @@
 #define _SYSMON_H
 
 void sysmon_init(void);
-void sysmon_blink_pattern(uint32_t pattern);
+void sysmon_blink_pattern(uint32_t pat);
 
 // just green
-#define BLINK_OK 0b01010101010101010101010101010101
+// #define BLINK_OK 0b01010101010101010101010101010101
+#define BLINK_OK 0b00000000000000000000000000000000
 // green/red/green/red alternating : boot
 #define BLINK_BOOT 0b10011001100110011001100110011001
 // green+red

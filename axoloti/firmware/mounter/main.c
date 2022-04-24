@@ -263,7 +263,7 @@ int main(void)
 
     /* turn off green LED, turn on red LED */
     palClearPad(LED1_PORT, LED1_PIN);
-    palSetPad(LED2_PORT, LED2_PIN);
+    // palSetPad(LED2_PORT, LED2_PIN);
 
     /* start the USB mass storage service */
     int ret = msdStart(&UMSD1, &msdConfig);

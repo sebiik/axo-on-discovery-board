@@ -1,0 +1,106 @@
+EESchema Schematic File Version 4
+EELAYER 30 0
+EELAYER END
+$Descr A4 11693 8268
+encoding utf-8
+Sheet 7 12
+Title ""
+Date ""
+Rev ""
+Comp ""
+Comment1 ""
+Comment2 ""
+Comment3 ""
+Comment4 ""
+$EndDescr
+$Comp
+L Connector:USB_B_Micro J?
+U 1 1 5F73AAFD
+P 4525 3475
+AR Path="/5F73AAFD" Ref="J?"  Part="1" 
+AR Path="/5F736ED6/5F73AAFD" Ref="J701"  Part="1" 
+F 0 "J701" H 4582 3942 50  0000 C CNN
+F 1 "USB_B" H 4582 3851 50  0000 C CNN
+F 2 "eec:GLOBAL_CONNECTOR_TECHNOLOGY-USB3145-30-1-A-0" H 4675 3425 50  0001 C CNN
+F 3 " ~" H 4675 3425 50  0001 C CNN
+	1    4525 3475
+	1    0    0    -1  
+$EndComp
+$Comp
+L Power_Protection:USBLC6-2P6 U701
+U 1 1 5F73BA4A
+P 6075 3525
+F 0 "U701" V 6029 3969 50  0000 L CNN
+F 1 "USBLC6-2P6" V 6120 3969 50  0000 L CNN
+F 2 "Package_TO_SOT_SMD:SOT-666" H 6075 3025 50  0001 C CNN
+F 3 "https://www.st.com/resource/en/datasheet/usblc6-2.pdf" H 6275 3875 50  0001 C CNN
+	1    6075 3525
+	0    1    1    0   
+$EndComp
+Text GLabel 4900 3275 2    50   Output ~ 0
+VBUS
+Wire Wire Line
+	4900 3275 4825 3275
+$Comp
+L power:GND #PWR0702
+U 1 1 61D59B2A
+P 4425 3975
+F 0 "#PWR0702" H 4425 3725 50  0001 C CNN
+F 1 "GND" H 4430 3802 50  0000 C CNN
+F 2 "" H 4425 3975 50  0001 C CNN
+F 3 "" H 4425 3975 50  0001 C CNN
+	1    4425 3975
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	4425 3875 4425 3925
+Wire Wire Line
+	4525 3875 4525 3925
+Wire Wire Line
+	4525 3925 4425 3925
+Connection ~ 4425 3925
+Wire Wire Line
+	4425 3925 4425 3975
+Wire Wire Line
+	4825 3575 5575 3575
+Wire Wire Line
+	5575 3575 5575 3975
+Wire Wire Line
+	5575 3975 5975 3975
+Wire Wire Line
+	5975 3975 5975 3925
+Wire Wire Line
+	5975 3125 5975 3075
+Wire Wire Line
+	5975 3075 5575 3075
+Wire Wire Line
+	5575 3075 5575 3475
+Wire Wire Line
+	5575 3475 4825 3475
+$Comp
+L power:GND #PWR0703
+U 1 1 61D5D36C
+P 5675 4050
+F 0 "#PWR0703" H 5675 3800 50  0001 C CNN
+F 1 "GND" H 5680 3877 50  0000 C CNN
+F 2 "" H 5675 4050 50  0001 C CNN
+F 3 "" H 5675 4050 50  0001 C CNN
+	1    5675 4050
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	5675 4050 5675 3525
+$Comp
+L power:+3.3V #PWR0701
+U 1 1 61D5DAC6
+P 6475 2975
+F 0 "#PWR0701" H 6475 2825 50  0001 C CNN
+F 1 "+3.3V" H 6490 3148 50  0000 C CNN
+F 2 "" H 6475 2975 50  0001 C CNN
+F 3 "" H 6475 2975 50  0001 C CNN
+	1    6475 2975
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	6475 2975 6475 3525
+$EndSCHEMATC
