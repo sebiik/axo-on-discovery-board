@@ -48,8 +48,8 @@ void adc_convert(void);
 #define SW2_PORT GPIOA
 #define SW2_PIN 0
 
-#define SDMIDI SD1
-// #define SDMIDI SD3
+// #define SDMIDI SD1
+#define SDMIDI SD3
 
 
 #endif

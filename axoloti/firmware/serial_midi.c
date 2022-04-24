@@ -153,11 +153,11 @@ void serial_midi_init(void) {
    * PA2(TX) and PA3(RX) are routed to USART2.
    */
   // RX
-  palSetPadMode(GPIOB, 7, PAL_MODE_ALTERNATE(7)|PAL_MODE_INPUT_PULLUP);
-  // palSetPadMode(GPIOD, 9, PAL_MODE_ALTERNATE(7)|PAL_MODE_INPUT_PULLUP);
+  // palSetPadMode(GPIOB, 7, PAL_MODE_ALTERNATE(7)|PAL_MODE_INPUT_PULLUP);
+  palSetPadMode(GPIOD, 9, PAL_MODE_ALTERNATE(7)|PAL_MODE_INPUT_PULLUP);
   // TX
-  palSetPadMode(GPIOB, 6, PAL_MODE_ALTERNATE(7)|PAL_STM32_OTYPE_OPENDRAIN);
-  // palSetPadMode(GPIOD, 8, PAL_MODE_ALTERNATE(7)|PAL_STM32_OTYPE_OPENDRAIN);
+  // palSetPadMode(GPIOB, 6, PAL_MODE_ALTERNATE(7)|PAL_STM32_OTYPE_OPENDRAIN);
+  palSetPadMode(GPIOD, 8, PAL_MODE_ALTERNATE(7)|PAL_STM32_OTYPE_OPENDRAIN);
   sdStart(&SDMIDI, &sdMidiCfg);
   chThdCreateStatic(waThreadMidi, sizeof(waThreadMidi), NORMALPRIO, ThreadMidi,
                     NULL);

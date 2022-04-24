@@ -182,9 +182,9 @@
 /*
  * SERIAL driver system settings.
  */
-#define STM32_SERIAL_USE_USART1             TRUE
+#define STM32_SERIAL_USE_USART1             FALSE
 #define STM32_SERIAL_USE_USART2             TRUE
-#define STM32_SERIAL_USE_USART3             FALSE // Was TRUE
+#define STM32_SERIAL_USE_USART3             TRUE // Required for Lake Chalco
 #define STM32_SERIAL_USE_UART4              FALSE
 #define STM32_SERIAL_USE_UART5              FALSE
 #define STM32_SERIAL_USE_USART6             FALSE
@@ -199,7 +199,7 @@
 /*
  * SPI driver system settings.
  */
-#define STM32_SPI_USE_SPI1                  TRUE
+#define STM32_SPI_USE_SPI1                  FALSE
 #define STM32_SPI_SPI1_RX_DMA_STREAM        STM32_DMA_STREAM_ID(2, 0)
 #define STM32_SPI_SPI1_TX_DMA_STREAM        STM32_DMA_STREAM_ID(2, 3)
 #define STM32_SPI_SPI1_DMA_PRIORITY         1 //TODO Might have to increase for SPI RAM
@@ -222,7 +222,7 @@
 /*
  * UART driver system settings.
  */
-#define STM32_UART_USE_USART1               TRUE
+#define STM32_UART_USE_USART1               FALSE
 #define STM32_UART_USART1_RX_DMA_STREAM     STM32_DMA_STREAM_ID(2, 5)
 #define STM32_UART_USART1_TX_DMA_STREAM     STM32_DMA_STREAM_ID(2, 7)
 #define STM32_UART_USART1_IRQ_PRIORITY      12
@@ -234,7 +234,7 @@
 #define STM32_UART_USART2_IRQ_PRIORITY      12
 #define STM32_UART_USART2_DMA_PRIORITY      0
 
-#define STM32_UART_USE_USART3               FALSE // Was TRUE
+#define STM32_UART_USE_USART3               FALSE
 #define STM32_UART_USART3_RX_DMA_STREAM     STM32_DMA_STREAM_ID(1, 1)
 #define STM32_UART_USART3_TX_DMA_STREAM     STM32_DMA_STREAM_ID(1, 3)
 #define STM32_UART_USART3_IRQ_PRIORITY      12

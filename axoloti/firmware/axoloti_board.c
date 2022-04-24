@@ -42,19 +42,19 @@ void adc_init(void) {
 }
 
 void adc_configpads(void) {
-  palSetPadMode(GPIOA, 0, PAL_MODE_INPUT_ANALOG);
+  // palSetPadMode(GPIOA, 0, PAL_MODE_INPUT_ANALOG);
   palSetPadMode(GPIOA, 1, PAL_MODE_INPUT_ANALOG);
 #ifndef ENABLE_SERIAL_DEBUG //seb: ifdef seemed to be a typo here
   palSetPadMode(GPIOA, 2, PAL_MODE_INPUT_ANALOG);
   palSetPadMode(GPIOA, 3, PAL_MODE_INPUT_ANALOG);
 #endif
   // don't skip GPIOA4,GPIOA5,GPIOA6,GPIOA7 //seb: seems to be working
-  palSetPadMode(GPIOA, 4, PAL_MODE_INPUT_ANALOG);
-  palSetPadMode(GPIOA, 5, PAL_MODE_INPUT_ANALOG);
+  // palSetPadMode(GPIOA, 4, PAL_MODE_INPUT_ANALOG);
+  // palSetPadMode(GPIOA, 5, PAL_MODE_INPUT_ANALOG);
   palSetPadMode(GPIOA, 6, PAL_MODE_INPUT_ANALOG);
   palSetPadMode(GPIOA, 7, PAL_MODE_INPUT_ANALOG);
-  palSetPadMode(GPIOB, 0, PAL_MODE_INPUT_ANALOG);
-  palSetPadMode(GPIOB, 1, PAL_MODE_INPUT_ANALOG);
+  // palSetPadMode(GPIOB, 0, PAL_MODE_INPUT_ANALOG);
+  // palSetPadMode(GPIOB, 1, PAL_MODE_INPUT_ANALOG);
   //skip GPIOPC0: USB PowerOn
   palSetPadMode(GPIOC, 1, PAL_MODE_INPUT_ANALOG);
   palSetPadMode(GPIOC, 2, PAL_MODE_INPUT_ANALOG);
@@ -74,7 +74,8 @@ unsigned short adcvalues[ADC_GRP1_NUM_CHANNELS * ADC_GRP1_BUF_DEPTH] __attribute
  * Mode:        Linear buffer, 8 samples of 1 channel, SW triggered.
  * Channels:    IN11.
  */
-static const ADCConversionGroup adcgrpcfg1 = {FALSE,      //circular buffer mode
+static const ADCConversionGroup adcgrpcfg1 = {
+    FALSE,      //circular buffer mode
     ADC_GRP1_NUM_CHANNELS,        //Number of the analog channels
     NULL,                         //Callback function (not needed here)
     0,             //Error callback
@@ -103,4 +104,8 @@ static const ADCConversionGroup adcgrpcfg1 = {FALSE,      //circular buffer mode
 void adc_convert(void) {
   adcStopConversion(&ADCD1);
   adcStartConversion(&ADCD1, &adcgrpcfg1, adcvalues, ADC_GRP1_BUF_DEPTH);
+  // invert values (due to Lake Chalco hardware setup)
+  // for (uint8_t ch=0; ch<ADC_GRP1_NUM_CHANNELS; ch++) {
+  //     adcvalues[ch] = 4095 - adcvalues[ch];
+  // }
 }
