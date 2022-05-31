@@ -1,5 +1,5 @@
 # axo-on-discovery-board
-Axoloti on STM32F4 discovery board using a WM8731 codec for audio in/out
+Axoloti on a ~~STM32F4 discovery board~~ Eurorack board using a WM8731 codec for audio in/out
 
 
 ~~Please note that the USB programming port is on the STM32F4 Discovery board, in other words it is on the back of the module and only accessible when the module is removed from the case. I didn't bother messing with the STM32F4's USB OTG ports as they are already laid out on the Discovery. This is okay for my personal use case as I don't reflash the unit often.~~
