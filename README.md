@@ -50,3 +50,4 @@ No plans to add an USB host port so far as there are TRS MIDI jacks already on t
 * 12 pots instead of 8 pots + 4 attenuverters
 * Core board schematic [0%]
 * Core board PCB layout [0%]
+* expansion header, expansion module with OLED, encoder, menu buttons?
