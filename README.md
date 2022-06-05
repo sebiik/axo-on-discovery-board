@@ -1,6 +1,20 @@
 # axo-on-discovery-board
 Axoloti on a ~~STM32F4 discovery board~~ Eurorack board using a WM8731 codec for audio in/out
 
+The images show the first prototype using a STM32F4 discovery board (use what you have).
+
+
+[image1](/images/v01_image_front.jpg)
+
+
+
+[image3](/images/v01_image_side.jpg)
+
+
+
+[image2](/images/v01_image_back.jpg)
+
+
 
 ~~Please note that the USB programming port is on the STM32F4 Discovery board, in other words it is on the back of the module and only accessible when the module is removed from the case. I didn't bother messing with the STM32F4's USB OTG ports as they are already laid out on the Discovery. This is okay for my personal use case as I don't reflash the unit often.~~
 
@@ -33,6 +47,6 @@ No plans to add an USB host port so far as there are TRS MIDI jacks already on t
 # TODO:
 
 * USB programming port
-* 12 post instead of 8 pots + 4 attenuverters
-* Core board schematic [-]
-* Core board PCB layout [-]
+* 12 pots instead of 8 pots + 4 attenuverters
+* Core board schematic [0%]
+* Core board PCB layout [0%]
