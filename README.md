@@ -4,15 +4,15 @@ Axoloti on a ~~STM32F4 discovery board~~ Eurorack board using a WM8731 codec for
 The images show the first prototype using a STM32F4 discovery board (use what you have).
 
 
-[image1](/images/v01_image_front.jpg)
+![image front](/images/v01_image_front.jpg)
 
 
 
-[image3](/images/v01_image_side.jpg)
+![image side](/images/v01_image_side.jpg)
 
 
 
-[image2](/images/v01_image_back.jpg)
+![image back](/images/v01_image_back.jpg)
 
 
 
