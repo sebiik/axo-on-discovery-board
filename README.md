@@ -35,19 +35,23 @@ No plans to add an USB host port so far as there are TRS MIDI jacks already on t
 * 4 momentary switches
 * 4 dimmable dual-colour LEDs
 * Micro SD card slot on panel
+* USB programming port (talk to Axoloti Patcher)
+* USB host port (connect USB MIDI keyboard directly)
 
 
-# Progress:
+# Frontend board & panel progress:
+
+* Feature set [✓]
+* Schematic [75%]
+* PCB layout [0%]
+
+
+# Core board progress:
 
 * Feature set [✓]
 * Schematic [✓]
-* PCB layout [75%]
+* PCB layout [99%]
 
 
-# TODO:
-
-* USB programming port
-* 12 pots instead of 8 pots + 4 attenuverters
-* Core board schematic [0%]
-* Core board PCB layout [0%]
+# Wishlist:
 * expansion header, expansion module with OLED, encoder, menu buttons?
