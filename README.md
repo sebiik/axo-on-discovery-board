@@ -20,7 +20,7 @@ The images show the first prototype using a STM32F4 discovery board (use what yo
 
 Turns out the USB programming port pins are not even accessible on the Discovery board. I plan to get rid of the Discovery altogether and design a custom Core board carrying an STM32F427, SDRAM and whatever (which will bring us MUCH closer to the original Axoloti).
 
-No plans to add an USB host port so far as there are TRS MIDI jacks already on the board.
+~~No plans to add an USB host port so far as there are TRS MIDI jacks already on the board.~~
 
 # Features:
 
