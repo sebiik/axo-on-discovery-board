@@ -27,8 +27,9 @@ Turns out the USB programming port pins are not even accessible on the Discovery
 * 20hp Eurorack module, "upgradeable" Core board plugs into the back
 * 2 audio inputs (24bit, 48khz, +/-5V or +/-10V with a simple modification)
 * 2 audio outputs (24bit, 48khz, +/-5V)
-* 12 pots
+* 8 pots
 * 8 unattenuated CV inputs (+/-5V) getting summed with pots 1-8
+* 4 additional attenuated CV inputs (+/-5V) patchble as patch objects
 * 2 protected gate inputs
 * 2 gate outputs (+10V)
 * 2 CV outputs (12bit resolution, +/-5V)
