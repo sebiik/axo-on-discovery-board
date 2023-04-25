@@ -37,15 +37,15 @@ Turns out the USB programming port pins are not even accessible on the Discovery
 * 4 momentary switches
 * 4 dimmable dual-colour LEDs
 * Micro SD card slot on panel
-* USB programming port (talk to Axoloti Patcher)
-* USB host port (connect USB MIDI keyboard directly)
+* USB programming port on panel (talk to Axoloti Patcher)
+* USB host port on panel (connect USB MIDI keyboard directly)
 
 
 # Frontend board & panel progress:
 
 * Feature set [✓]
 * Schematic [75%]
-* PCB layout [0%]
+* PCB layout [10%]
 
 
 # Core board progress:
